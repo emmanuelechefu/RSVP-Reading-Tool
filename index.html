@@ -2,11 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>RSVP Speed Reader</title>
 
   <style>
+    /* =========================================================
+       BASE
+       ========================================================= */
+
     * {
       box-sizing: border-box;
     }
@@ -19,7 +27,12 @@
 
     body {
       min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       background: #090909;
       color: white;
     }
@@ -30,26 +43,58 @@
       font: inherit;
     }
 
-    /* ========================================
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+
+    /* =========================================================
        APP LAYOUT
-       ======================================== */
+       ========================================================= */
 
     .app-shell {
       min-height: 100vh;
+
       display: flex;
     }
 
-    /* ========================================
+    .main-area {
+      flex: 1;
+      min-width: 0;
+
+      position: relative;
+
+      padding:
+        44px
+        32px
+        72px;
+
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1080px;
+
+      display: grid;
+
+      gap: 26px;
+    }
+
+
+    /* =========================================================
        SIDEBAR
-       ======================================== */
+       ========================================================= */
 
     .sidebar {
-      width: 280px;
+      width: 290px;
       flex-shrink: 0;
 
       background: #111111;
 
-      border-right: 1px solid #242424;
+      border-right:
+        1px solid #242424;
 
       display: flex;
       flex-direction: column;
@@ -61,30 +106,36 @@
 
     .sidebar.collapsed {
       width: 0;
+
       overflow: hidden;
+
       border-right: 0;
     }
 
     .sidebar-header {
-      padding: 14px;
+      padding: 16px;
 
-      border-bottom: 1px solid #242424;
+      border-bottom:
+        1px solid #242424;
     }
 
     .new-text-button {
       width: 100%;
 
-      border: 1px solid #333;
-      border-radius: 10px;
+      border:
+        1px solid #333;
+
+      border-radius: 11px;
 
       background: #1d1d1d;
       color: white;
 
-      padding: 12px 14px;
+      padding: 13px 14px;
 
       cursor: pointer;
 
       text-align: left;
+
       font-weight: 600;
     }
 
@@ -93,15 +144,18 @@
     }
 
     .sidebar-section-title {
+      padding:
+        20px
+        16px
+        9px;
+
       color: #888;
 
       font-size: 12px;
       font-weight: 600;
 
       text-transform: uppercase;
-      letter-spacing: 0.07em;
-
-      padding: 18px 16px 8px;
+      letter-spacing: 0.08em;
     }
 
     .saved-list {
@@ -109,16 +163,19 @@
 
       overflow-y: auto;
 
-      padding: 4px 8px 14px;
+      padding:
+        4px
+        8px
+        18px;
     }
 
     .saved-empty {
+      padding: 12px 9px;
+
       color: #666;
 
       font-size: 13px;
       line-height: 1.5;
-
-      padding: 12px 8px;
     }
 
     .saved-item {
@@ -129,9 +186,9 @@
 
       width: 100%;
 
-      border-radius: 8px;
-
       margin-bottom: 3px;
+
+      border-radius: 8px;
 
       background: transparent;
     }
@@ -153,41 +210,52 @@
 
       text-align: left;
 
-      padding: 10px 8px 10px 10px;
+      padding:
+        11px
+        8px
+        11px
+        10px;
 
       overflow: hidden;
+
       white-space: nowrap;
       text-overflow: ellipsis;
     }
 
     .saved-title-button:hover {
       background: #1c1c1c;
+
       border-radius: 8px;
     }
 
-    .saved-item.active .saved-title-button:hover {
+    .saved-item.active
+    .saved-title-button:hover {
       background: #2a2a2a;
     }
 
     .saved-menu-button {
       flex-shrink: 0;
 
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
 
       border: 0;
-      border-radius: 6px;
+      border-radius: 7px;
 
       background: transparent;
       color: #999;
 
       cursor: pointer;
 
+      font-size: 20px;
+
       opacity: 0;
     }
 
-    .saved-item:hover .saved-menu-button,
-    .saved-item.active .saved-menu-button {
+    .saved-item:hover
+    .saved-menu-button,
+    .saved-item.active
+    .saved-menu-button {
       opacity: 1;
     }
 
@@ -196,25 +264,32 @@
       color: white;
     }
 
-    /* ========================================
+
+    /* =========================================================
        CONTEXT MENU
-       ======================================== */
+       ========================================================= */
 
     .context-menu {
       position: fixed;
 
       z-index: 100;
 
-      width: 150px;
+      width: 160px;
 
       padding: 6px;
 
-      border: 1px solid #333;
+      border:
+        1px solid #333;
+
       border-radius: 10px;
 
       background: #1c1c1c;
 
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+      box-shadow:
+        0
+        12px
+        35px
+        rgba(0, 0, 0, 0.45);
 
       display: none;
     }
@@ -227,14 +302,15 @@
       width: 100%;
 
       border: 0;
-      border-radius: 6px;
+      border-radius: 7px;
 
       background: transparent;
       color: white;
 
-      padding: 9px 10px;
+      padding: 10px;
 
       cursor: pointer;
+
       text-align: left;
     }
 
@@ -246,79 +322,106 @@
       color: #ff7979;
     }
 
-    /* ========================================
-       MAIN
-       ======================================== */
 
-    .main-area {
-      flex: 1;
-      min-width: 0;
-
-      position: relative;
-
-      padding: 32px 24px 60px;
-
-      display: flex;
-      justify-content: center;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 850px;
-    }
+    /* =========================================================
+       TOP BAR
+       ========================================================= */
 
     .top-bar {
-      display: flex;
+      display: grid;
+
+      grid-template-columns:
+        auto
+        1fr
+        auto;
+
       align-items: center;
 
-      gap: 12px;
-
-      margin-bottom: 20px;
+      gap: 18px;
     }
 
     .sidebar-toggle {
+      width: 52px;
+      height: 52px;
+
       flex-shrink: 0;
 
-      width: 42px;
-      height: 42px;
+      border:
+        1px solid #333;
 
-      border: 1px solid #333;
-      border-radius: 9px;
+      border-radius: 12px;
 
       background: #171717;
       color: white;
 
       cursor: pointer;
 
-      font-size: 20px;
+      font-size: 24px;
     }
 
     .sidebar-toggle:hover {
       background: #242424;
     }
 
-    h1 {
-      flex: 1;
 
+    /* =========================================================
+       FANCY TITLE
+       ========================================================= */
+
+    .page-title {
       margin: 0;
 
       text-align: center;
 
-      font-size: 28px;
+      font-size:
+        clamp(
+          34px,
+          3.2vw,
+          58px
+        );
+
+      font-weight: 700;
+
+      line-height: 1.1;
+
+      letter-spacing: 0.01em;
+    }
+
+    .title-word {
+      display: inline-block;
+
+      white-space: nowrap;
+    }
+
+    .title-pivot {
+      color: #ff4141;
+    }
+
+    .title-space {
+      display: inline-block;
+
+      width: 0.45em;
     }
 
     .save-button {
+      min-height: 52px;
+
       flex-shrink: 0;
 
-      border: 1px solid #3b3b3b;
-      border-radius: 8px;
+      border:
+        1px solid #3b3b3b;
+
+      border-radius: 10px;
 
       background: #1b1b1b;
       color: white;
 
-      padding: 10px 14px;
+      padding:
+        12px
+        18px;
 
       cursor: pointer;
+
       font-weight: 600;
     }
 
@@ -326,34 +429,37 @@
       background: #282828;
     }
 
-    /* ========================================
-       INPUT
-       ======================================== */
+
+    /* =========================================================
+       INPUT / CONTROLS
+       ========================================================= */
 
     .controls {
       display: grid;
 
-      gap: 14px;
-
-      margin-bottom: 24px;
+      gap: 18px;
     }
 
     textarea {
       width: 100%;
-      min-height: 180px;
+
+      min-height: 230px;
 
       resize: vertical;
 
       background: #161616;
       color: white;
 
-      border: 1px solid #333;
-      border-radius: 10px;
+      border:
+        1px solid #333;
 
-      padding: 16px;
+      border-radius: 12px;
+
+      padding: 20px;
 
       font-size: 16px;
-      line-height: 1.5;
+
+      line-height: 1.55;
 
       outline: none;
     }
@@ -366,21 +472,27 @@
       display: flex;
       flex-wrap: wrap;
 
-      gap: 10px;
+      gap: 14px;
 
       align-items: center;
     }
 
     .wpm-input {
-      width: 105px;
+      width: 120px;
+
+      min-height: 48px;
 
       background: #161616;
       color: white;
 
-      border: 1px solid #333;
-      border-radius: 8px;
+      border:
+        1px solid #333;
 
-      padding: 10px 12px;
+      border-radius: 10px;
+
+      padding:
+        12px
+        14px;
 
       outline: none;
     }
@@ -390,10 +502,15 @@
     }
 
     .control-button {
-      border: 0;
-      border-radius: 8px;
+      min-height: 48px;
 
-      padding: 11px 18px;
+      border: 0;
+
+      border-radius: 10px;
+
+      padding:
+        13px
+        20px;
 
       cursor: pointer;
 
@@ -409,22 +526,26 @@
 
     .control-button:disabled {
       opacity: 0.35;
+
       cursor: not-allowed;
     }
 
-    /* ========================================
+
+    /* =========================================================
        READER
-       ======================================== */
+       ========================================================= */
 
     .reader {
       position: relative;
 
-      height: 250px;
+      height: 310px;
 
       background: #0d0d0d;
 
-      border: 1px solid #222;
-      border-radius: 14px;
+      border:
+        1px solid #222;
+
+      border-radius: 16px;
 
       overflow: hidden;
     }
@@ -438,11 +559,12 @@
       left: 50%;
 
       width: 2px;
-      height: 22px;
+      height: 28px;
 
       background: #383838;
 
-      transform: translateX(-50%);
+      transform:
+        translateX(-50%);
     }
 
     .reader::before {
@@ -453,6 +575,11 @@
       bottom: 0;
     }
 
+
+    /* =========================================================
+       RSVP WORD
+       ========================================================= */
+
     .word {
       position: absolute;
 
@@ -460,17 +587,28 @@
       top: 50%;
 
       display: inline-flex;
+
       align-items: baseline;
 
       white-space: pre;
 
-      font-size: clamp(36px, 8vw, 76px);
-      font-weight: 600;
+      font-size:
+        clamp(
+          52px,
+          8vw,
+          104px
+        );
+
+      font-weight: 700;
+
       line-height: 1;
 
       transform:
         translate(
-          var(--pivot-shift, 0px),
+          var(
+            --pivot-shift,
+            0px
+          ),
           -50%
         );
     }
@@ -479,6 +617,7 @@
     .pivot,
     .after {
       display: inline;
+
       white-space: pre;
     }
 
@@ -486,19 +625,20 @@
       color: #ff4141;
     }
 
-    /* ========================================
+
+    /* =========================================================
        PROGRESS
-       ======================================== */
+       ========================================================= */
 
     .progress-area {
-      margin-top: 18px;
+      margin-top: 2px;
     }
 
     .progress-slider {
       --progress: 0%;
 
       width: 100%;
-      height: 18px;
+      height: 22px;
 
       margin: 0;
       padding: 0;
@@ -511,8 +651,11 @@
       cursor: pointer;
     }
 
+
+    /* Chrome / Edge / Safari */
+
     .progress-slider::-webkit-slider-runnable-track {
-      height: 8px;
+      height: 9px;
 
       border-radius: 999px;
 
@@ -529,22 +672,30 @@
     .progress-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
 
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
 
-      margin-top: -5px;
+      margin-top: -5.5px;
 
       border-radius: 50%;
 
-      border: 2px solid white;
+      border:
+        2px solid white;
 
       background: #090909;
 
       cursor: grab;
     }
 
+    .progress-slider::-webkit-slider-thumb:active {
+      cursor: grabbing;
+    }
+
+
+    /* Firefox */
+
     .progress-slider::-moz-range-track {
-      height: 8px;
+      height: 9px;
 
       border-radius: 999px;
 
@@ -552,7 +703,7 @@
     }
 
     .progress-slider::-moz-range-progress {
-      height: 8px;
+      height: 9px;
 
       border-radius: 999px;
 
@@ -560,10 +711,12 @@
     }
 
     .progress-slider::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
 
-      border: 2px solid white;
+      border:
+        2px solid white;
+
       border-radius: 50%;
 
       background: #090909;
@@ -573,6 +726,7 @@
 
     .progress-slider:disabled {
       opacity: 0.35;
+
       cursor: default;
     }
 
@@ -582,9 +736,10 @@
       justify-content: space-between;
       align-items: flex-start;
 
-      margin-top: 5px;
+      margin-top: 10px;
 
-      font-size: 14px;
+      font-size: 16px;
+
       color: #888;
     }
 
@@ -594,11 +749,12 @@
 
       align-items: flex-end;
 
-      gap: 5px;
+      gap: 7px;
     }
 
     .time-remaining {
-      font-size: 12px;
+      font-size: 14px;
+
       color: #666;
     }
 
@@ -607,14 +763,15 @@
 
       color: #666;
 
-      font-size: 13px;
+      font-size: 15px;
 
-      margin-top: 15px;
+      margin-top: 6px;
     }
 
-    /* ========================================
+
+    /* =========================================================
        TOAST
-       ======================================== */
+       ========================================================= */
 
     .toast {
       position: fixed;
@@ -624,19 +781,26 @@
 
       z-index: 200;
 
-      transform: translateX(-50%) translateY(20px);
+      transform:
+        translateX(-50%)
+        translateY(20px);
 
       background: #242424;
       color: white;
 
-      border: 1px solid #3a3a3a;
+      border:
+        1px solid #3a3a3a;
+
       border-radius: 9px;
 
-      padding: 10px 14px;
+      padding:
+        10px
+        14px;
 
       font-size: 14px;
 
       opacity: 0;
+
       pointer-events: none;
 
       transition:
@@ -647,14 +811,18 @@
     .toast.show {
       opacity: 1;
 
-      transform: translateX(-50%) translateY(0);
+      transform:
+        translateX(-50%)
+        translateY(0);
     }
 
-    /* ========================================
+
+    /* =========================================================
        MOBILE
-       ======================================== */
+       ========================================================= */
 
     @media (max-width: 760px) {
+
       .sidebar {
         position: fixed;
 
@@ -664,48 +832,125 @@
 
         z-index: 50;
 
-        width: 280px;
+        width: 290px;
 
-        box-shadow: 20px 0 40px rgba(0, 0, 0, 0.45);
+        box-shadow:
+          20px
+          0
+          40px
+          rgba(0, 0, 0, 0.45);
       }
 
       .sidebar.collapsed {
-        width: 280px;
+        width: 290px;
 
-        transform: translateX(-100%);
+        transform:
+          translateX(-100%);
 
-        border-right: 1px solid #242424;
+        border-right:
+          1px solid #242424;
       }
 
       .main-area {
         padding:
-          18px
-          14px
-          50px;
+          24px
+          16px
+          42px;
       }
 
-      h1 {
+      .app {
+        gap: 20px;
+      }
+
+      .top-bar {
+        gap: 10px;
+      }
+
+      .sidebar-toggle {
+        width: 46px;
+        height: 46px;
+
         font-size: 21px;
       }
 
       .save-button {
-        padding: 9px 11px;
+        min-height: 46px;
+
+        padding:
+          9px
+          12px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      textarea {
+        min-height: 180px;
+
+        padding: 16px;
       }
 
       .reader {
-        height: 200px;
+        height: 230px;
+      }
+
+      .word {
+        font-size:
+          clamp(
+            42px,
+            12vw,
+            72px
+          );
+      }
+
+      .control-row {
+        gap: 10px;
+      }
+    }
+
+
+    @media (max-width: 480px) {
+
+      .page-title {
+        font-size: 19px;
+      }
+
+      .title-space {
+        width: 0.3em;
+      }
+
+      .sidebar-toggle {
+        width: 42px;
+        height: 42px;
+      }
+
+      .save-button {
+        min-height: 42px;
+
+        padding:
+          8px
+          10px;
+
+        font-size: 14px;
+      }
+
+      .reader {
+        height: 210px;
       }
     }
   </style>
 </head>
 
+
 <body>
 
   <div class="app-shell">
 
-    <!-- ========================================
+
+    <!-- =====================================================
          SIDEBAR
-         ======================================== -->
+         ===================================================== -->
 
     <aside
       class="sidebar"
@@ -717,6 +962,7 @@
         <button
           class="new-text-button"
           id="newTextButton"
+          type="button"
         >
           ＋ New text
         </button>
@@ -737,19 +983,25 @@
     </aside>
 
 
-    <!-- ========================================
-         MAIN
-         ======================================== -->
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
 
     <main class="main-area">
 
       <div class="app">
+
+
+        <!-- =================================================
+             TOP BAR
+             ================================================= -->
 
         <div class="top-bar">
 
           <button
             class="sidebar-toggle"
             id="sidebarToggle"
+            type="button"
             aria-label="Toggle saved texts sidebar"
             title="Toggle saved texts"
           >
@@ -757,14 +1009,17 @@
           </button>
 
 
-          <h1>
-            RSVP Speed Reader
-          </h1>
+          <h1
+            class="page-title"
+            id="pageTitle"
+            aria-label="RSVP Speed Reader"
+          ></h1>
 
 
           <button
             class="save-button"
             id="saveTextButton"
+            type="button"
           >
             Save
           </button>
@@ -772,9 +1027,9 @@
         </div>
 
 
-        <!-- ========================================
-             TEXT / CONTROLS
-             ======================================== -->
+        <!-- =================================================
+             TEXT INPUT AND CONTROLS
+             ================================================= -->
 
         <section class="controls">
 
@@ -800,6 +1055,7 @@
               max="2500"
               step="1"
               inputmode="numeric"
+              aria-label="Words per minute"
             />
 
 
@@ -811,6 +1067,7 @@
             <button
               class="control-button"
               id="startButton"
+              type="button"
             >
               Start
             </button>
@@ -819,6 +1076,7 @@
             <button
               class="control-button"
               id="pauseButton"
+              type="button"
               disabled
             >
               Pause
@@ -828,6 +1086,7 @@
             <button
               class="control-button"
               id="restartButton"
+              type="button"
               disabled
             >
               Restart
@@ -838,9 +1097,9 @@
         </section>
 
 
-        <!-- ========================================
-             READER
-             ======================================== -->
+        <!-- =================================================
+             RSVP READER
+             ================================================= -->
 
         <section class="reader">
 
@@ -863,9 +1122,9 @@
         </section>
 
 
-        <!-- ========================================
+        <!-- =================================================
              PROGRESS
-             ======================================== -->
+             ================================================= -->
 
         <section class="progress-area">
 
@@ -921,22 +1180,27 @@
   </div>
 
 
-  <!-- ========================================
-       SAVED TEXT MENU
-       ======================================== -->
+  <!-- =======================================================
+       SAVED TEXT CONTEXT MENU
+       ======================================================= -->
 
   <div
     class="context-menu"
     id="contextMenu"
   >
 
-    <button id="renameSavedButton">
+    <button
+      id="renameSavedButton"
+      type="button"
+    >
       Rename
     </button>
+
 
     <button
       class="delete-option"
       id="deleteSavedButton"
+      type="button"
     >
       Delete
     </button>
@@ -944,89 +1208,142 @@
   </div>
 
 
+  <!-- =======================================================
+       TOAST
+       ======================================================= -->
+
   <div
     class="toast"
     id="toast"
+    aria-live="polite"
   ></div>
 
 
   <script>
 
-    /* ========================================
+    /* =========================================================
        ELEMENTS
-       ======================================== */
+       ========================================================= */
 
     const sidebar =
-      document.getElementById("sidebar");
+      document.getElementById(
+        "sidebar"
+      );
 
     const sidebarToggle =
-      document.getElementById("sidebarToggle");
+      document.getElementById(
+        "sidebarToggle"
+      );
 
     const newTextButton =
-      document.getElementById("newTextButton");
+      document.getElementById(
+        "newTextButton"
+      );
 
     const saveTextButton =
-      document.getElementById("saveTextButton");
+      document.getElementById(
+        "saveTextButton"
+      );
 
     const savedList =
-      document.getElementById("savedList");
+      document.getElementById(
+        "savedList"
+      );
 
     const contextMenu =
-      document.getElementById("contextMenu");
+      document.getElementById(
+        "contextMenu"
+      );
 
     const renameSavedButton =
-      document.getElementById("renameSavedButton");
+      document.getElementById(
+        "renameSavedButton"
+      );
 
     const deleteSavedButton =
-      document.getElementById("deleteSavedButton");
+      document.getElementById(
+        "deleteSavedButton"
+      );
 
     const toast =
-      document.getElementById("toast");
+      document.getElementById(
+        "toast"
+      );
 
+    const pageTitle =
+      document.getElementById(
+        "pageTitle"
+      );
 
     const textInput =
-      document.getElementById("textInput");
+      document.getElementById(
+        "textInput"
+      );
 
     const wpmInput =
-      document.getElementById("wpmInput");
+      document.getElementById(
+        "wpmInput"
+      );
 
     const startButton =
-      document.getElementById("startButton");
+      document.getElementById(
+        "startButton"
+      );
 
     const pauseButton =
-      document.getElementById("pauseButton");
+      document.getElementById(
+        "pauseButton"
+      );
 
     const restartButton =
-      document.getElementById("restartButton");
+      document.getElementById(
+        "restartButton"
+      );
 
     const wordElement =
-      document.getElementById("word");
+      document.getElementById(
+        "word"
+      );
 
     const beforeElement =
-      document.getElementById("before");
+      document.getElementById(
+        "before"
+      );
 
     const pivotElement =
-      document.getElementById("pivot");
+      document.getElementById(
+        "pivot"
+      );
 
     const afterElement =
-      document.getElementById("after");
+      document.getElementById(
+        "after"
+      );
 
     const progressSlider =
-      document.getElementById("progressSlider");
+      document.getElementById(
+        "progressSlider"
+      );
 
     const wordCounter =
-      document.getElementById("wordCounter");
+      document.getElementById(
+        "wordCounter"
+      );
 
     const percentage =
-      document.getElementById("percentage");
+      document.getElementById(
+        "percentage"
+      );
 
     const timeRemaining =
-      document.getElementById("timeRemaining");
+      document.getElementById(
+        "timeRemaining"
+      );
 
 
-    /* ========================================
+    /* =========================================================
        STATE
-       ======================================== */
+       ========================================================= */
 
     const STORAGE_KEY =
       "rsvp_saved_texts_v1";
@@ -1050,9 +1367,181 @@
     let paused = false;
 
 
-    /* ========================================
+    /* =========================================================
+       RANDOM TITLE
+       ========================================================= */
+
+    function getRandomDisplayCharacterIndex(
+      word
+    ) {
+
+      const validIndexes = [];
+
+
+      for (
+        let i = 0;
+        i < word.length;
+        i++
+      ) {
+
+        if (
+          /[\p{L}\p{N}]/u.test(
+            word[i]
+          )
+        ) {
+
+          validIndexes.push(i);
+
+        }
+
+      }
+
+
+      if (
+        validIndexes.length === 0
+      ) {
+
+        return 0;
+
+      }
+
+
+      const randomPosition =
+        Math.floor(
+          Math.random() *
+          validIndexes.length
+        );
+
+
+      return validIndexes[
+        randomPosition
+      ];
+
+    }
+
+
+    function renderFancyTitle() {
+
+      const titleText =
+        "RSVP Speed Reader";
+
+
+      const titleWords =
+        titleText.split(" ");
+
+
+      pageTitle.innerHTML = "";
+
+
+      titleWords.forEach(
+        (
+          titleWord,
+          wordIndex
+        ) => {
+
+          const pivotIndex =
+            getRandomDisplayCharacterIndex(
+              titleWord
+            );
+
+
+          const wordSpan =
+            document.createElement(
+              "span"
+            );
+
+
+          wordSpan.className =
+            "title-word";
+
+
+          const beforeSpan =
+            document.createElement(
+              "span"
+            );
+
+
+          beforeSpan.textContent =
+            titleWord.slice(
+              0,
+              pivotIndex
+            );
+
+
+          const pivotSpan =
+            document.createElement(
+              "span"
+            );
+
+
+          pivotSpan.className =
+            "title-pivot";
+
+
+          pivotSpan.textContent =
+            titleWord[
+              pivotIndex
+            ];
+
+
+          const afterSpan =
+            document.createElement(
+              "span"
+            );
+
+
+          afterSpan.textContent =
+            titleWord.slice(
+              pivotIndex + 1
+            );
+
+
+          wordSpan.append(
+            beforeSpan,
+            pivotSpan,
+            afterSpan
+          );
+
+
+          pageTitle.appendChild(
+            wordSpan
+          );
+
+
+          if (
+            wordIndex <
+            titleWords.length - 1
+          ) {
+
+            const spacer =
+              document.createElement(
+                "span"
+              );
+
+
+            spacer.className =
+              "title-space";
+
+
+            spacer.textContent =
+              " ";
+
+
+            pageTitle.appendChild(
+              spacer
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* =========================================================
        STORAGE
-       ======================================== */
+       ========================================================= */
 
     function loadSavedTextsFromStorage() {
 
@@ -1089,6 +1578,7 @@
           error
         );
 
+
         savedTexts = [];
 
       }
@@ -1102,7 +1592,9 @@
 
         localStorage.setItem(
           STORAGE_KEY,
-          JSON.stringify(savedTexts)
+          JSON.stringify(
+            savedTexts
+          )
         );
 
       } catch (error) {
@@ -1122,15 +1614,18 @@
     }
 
 
-    /* ========================================
-       TITLE GENERATION
-       ======================================== */
+    /* =========================================================
+       SAVED TEXT TITLE
+       ========================================================= */
 
     function generateTitle(text) {
 
       const clean =
         text
-          .replace(/\s+/g, " ")
+          .replace(
+            /\s+/g,
+            " "
+          )
           .trim();
 
 
@@ -1141,20 +1636,25 @@
       }
 
 
-      const words =
+      const textWords =
         clean.split(" ");
 
 
       let title =
-        words
+        textWords
           .slice(0, 7)
           .join(" ");
 
 
-      if (title.length > 45) {
+      if (
+        title.length > 45
+      ) {
 
         title =
-          title.slice(0, 45);
+          title.slice(
+            0,
+            45
+          );
 
       }
 
@@ -1174,9 +1674,32 @@
     }
 
 
-    /* ========================================
-       SAVE CURRENT TEXT
-       ======================================== */
+    function createId() {
+
+      if (
+        window.crypto &&
+        crypto.randomUUID
+      ) {
+
+        return crypto.randomUUID();
+
+      }
+
+
+      return (
+        Date.now().toString(36) +
+        Math
+          .random()
+          .toString(36)
+          .slice(2)
+      );
+
+    }
+
+
+    /* =========================================================
+       SAVE
+       ========================================================= */
 
     function saveCurrentText() {
 
@@ -1199,8 +1722,7 @@
 
 
       /*
-       * If this text came from an existing
-       * saved item, update that item.
+       * Update existing saved text.
        */
 
       if (activeSavedId) {
@@ -1208,7 +1730,8 @@
         const existing =
           savedTexts.find(
             item =>
-              item.id === activeSavedId
+              item.id ===
+              activeSavedId
           );
 
 
@@ -1217,8 +1740,10 @@
           existing.text =
             textInput.value;
 
+
           existing.wpm =
             getWpm();
+
 
           existing.updatedAt =
             Date.now();
@@ -1229,9 +1754,14 @@
           renderSavedTexts();
 
 
+          saveTextButton.textContent =
+            "Save";
+
+
           showToast(
             "Saved changes."
           );
+
 
           return;
 
@@ -1241,7 +1771,7 @@
 
 
       /*
-       * Otherwise create a new saved text.
+       * Create new saved text.
        */
 
       const item = {
@@ -1281,6 +1811,10 @@
       renderSavedTexts();
 
 
+      saveTextButton.textContent =
+        "Save";
+
+
       showToast(
         "Text saved."
       );
@@ -1288,31 +1822,9 @@
     }
 
 
-    function createId() {
-
-      if (
-        window.crypto &&
-        crypto.randomUUID
-      ) {
-
-        return crypto.randomUUID();
-
-      }
-
-
-      return (
-        Date.now().toString(36) +
-        Math.random()
-          .toString(36)
-          .slice(2)
-      );
-
-    }
-
-
-    /* ========================================
+    /* =========================================================
        RENDER SAVED TEXTS
-       ======================================== */
+       ========================================================= */
 
     function renderSavedTexts() {
 
@@ -1347,125 +1859,135 @@
       }
 
 
-      /*
-       * Newest modified items first.
-       */
-
       const sorted =
         [...savedTexts].sort(
-          (a, b) =>
+          (
+            a,
+            b
+          ) =>
             (b.updatedAt || 0) -
             (a.updatedAt || 0)
         );
 
 
-      sorted.forEach(item => {
+      sorted.forEach(
+        item => {
 
-        const row =
-          document.createElement(
-            "div"
+          const row =
+            document.createElement(
+              "div"
+            );
+
+
+          row.className =
+            "saved-item";
+
+
+          if (
+            item.id ===
+            activeSavedId
+          ) {
+
+            row.classList.add(
+              "active"
+            );
+
+          }
+
+
+          const titleButton =
+            document.createElement(
+              "button"
+            );
+
+
+          titleButton.type =
+            "button";
+
+
+          titleButton.className =
+            "saved-title-button";
+
+
+          titleButton.textContent =
+            item.title;
+
+
+          titleButton.title =
+            item.title;
+
+
+          titleButton.addEventListener(
+            "click",
+            () => {
+
+              loadSavedText(
+                item.id
+              );
+
+            }
           );
 
 
-        row.className =
-          "saved-item";
+          const menuButton =
+            document.createElement(
+              "button"
+            );
 
 
-        if (
-          item.id === activeSavedId
-        ) {
+          menuButton.type =
+            "button";
 
-          row.classList.add(
-            "active"
+
+          menuButton.className =
+            "saved-menu-button";
+
+
+          menuButton.textContent =
+            "⋯";
+
+
+          menuButton.setAttribute(
+            "aria-label",
+            `Options for ${item.title}`
+          );
+
+
+          menuButton.addEventListener(
+            "click",
+            event => {
+
+              event.stopPropagation();
+
+
+              openContextMenu(
+                item.id,
+                menuButton
+              );
+
+            }
+          );
+
+
+          row.append(
+            titleButton,
+            menuButton
+          );
+
+
+          savedList.appendChild(
+            row
           );
 
         }
-
-
-        const titleButton =
-          document.createElement(
-            "button"
-          );
-
-
-        titleButton.className =
-          "saved-title-button";
-
-
-        titleButton.textContent =
-          item.title;
-
-
-        titleButton.title =
-          item.title;
-
-
-        titleButton.addEventListener(
-          "click",
-          () => {
-
-            loadSavedText(
-              item.id
-            );
-
-          }
-        );
-
-
-        const menuButton =
-          document.createElement(
-            "button"
-          );
-
-
-        menuButton.className =
-          "saved-menu-button";
-
-
-        menuButton.textContent =
-          "⋯";
-
-
-        menuButton.setAttribute(
-          "aria-label",
-          `Options for ${item.title}`
-        );
-
-
-        menuButton.addEventListener(
-          "click",
-          event => {
-
-            event.stopPropagation();
-
-
-            openContextMenu(
-              item.id,
-              menuButton
-            );
-
-          }
-        );
-
-
-        row.append(
-          titleButton,
-          menuButton
-        );
-
-
-        savedList.appendChild(
-          row
-        );
-
-      });
+      );
 
     }
 
 
-    /* ========================================
+    /* =========================================================
        LOAD SAVED TEXT
-       ======================================== */
+       ========================================================= */
 
     function loadSavedText(id) {
 
@@ -1493,19 +2015,18 @@
         item.wpm || 300;
 
 
-      resetReader();
+      saveTextButton.textContent =
+        "Save";
 
+
+      resetReader();
 
       renderSavedTexts();
 
 
-      /*
-       * On small screens, close sidebar
-       * after choosing an item.
-       */
-
       if (
-        window.innerWidth <= 760
+        window.innerWidth <=
+        760
       ) {
 
         sidebar.classList.add(
@@ -1517,21 +2038,29 @@
     }
 
 
-    /* ========================================
+    /* =========================================================
        NEW TEXT
-       ======================================== */
+       ========================================================= */
 
     function newText() {
 
       clearTimeout(timer);
 
 
-      activeSavedId = null;
+      activeSavedId =
+        null;
 
 
-      textInput.value = "";
+      textInput.value =
+        "";
 
-      wpmInput.value = 300;
+
+      wpmInput.value =
+        300;
+
+
+      saveTextButton.textContent =
+        "Save";
 
 
       resetReader();
@@ -1543,7 +2072,8 @@
 
 
       if (
-        window.innerWidth <= 760
+        window.innerWidth <=
+        760
       ) {
 
         sidebar.classList.add(
@@ -1555,9 +2085,9 @@
     }
 
 
-    /* ========================================
-       RENAME / DELETE
-       ======================================== */
+    /* =========================================================
+       CONTEXT MENU
+       ========================================================= */
 
     function openContextMenu(
       id,
@@ -1572,15 +2102,40 @@
         button.getBoundingClientRect();
 
 
-      contextMenu.style.left =
-        `${Math.max(
+      const menuWidth =
+        160;
+
+
+      const left =
+        Math.min(
+          window.innerWidth -
+          menuWidth -
           8,
-          rect.right - 150
-        )}px`;
+
+          Math.max(
+            8,
+            rect.right -
+            menuWidth
+          )
+        );
+
+
+      const top =
+        Math.min(
+          window.innerHeight -
+          100,
+
+          rect.bottom +
+          4
+        );
+
+
+      contextMenu.style.left =
+        `${left}px`;
 
 
       contextMenu.style.top =
-        `${rect.bottom + 4}px`;
+        `${top}px`;
 
 
       contextMenu.classList.add(
@@ -1597,7 +2152,8 @@
       );
 
 
-      contextMenuId = null;
+      contextMenuId =
+        null;
 
     }
 
@@ -1609,16 +2165,23 @@
       }
 
 
+      const id =
+        contextMenuId;
+
+
       const item =
         savedTexts.find(
           saved =>
-            saved.id ===
-            contextMenuId
+            saved.id === id
         );
 
 
       if (!item) {
+
+        closeContextMenu();
+
         return;
+
       }
 
 
@@ -1629,7 +2192,9 @@
         );
 
 
-      if (newTitle === null) {
+      if (
+        newTitle === null
+      ) {
 
         closeContextMenu();
 
@@ -1675,16 +2240,23 @@
       }
 
 
+      const id =
+        contextMenuId;
+
+
       const item =
         savedTexts.find(
           saved =>
-            saved.id ===
-            contextMenuId
+            saved.id === id
         );
 
 
       if (!item) {
+
+        closeContextMenu();
+
         return;
+
       }
 
 
@@ -1706,17 +2278,20 @@
       savedTexts =
         savedTexts.filter(
           saved =>
-            saved.id !== item.id
+            saved.id !== id
         );
 
 
       if (
-        activeSavedId ===
-        item.id
+        activeSavedId === id
       ) {
 
         activeSavedId =
           null;
+
+
+        saveTextButton.textContent =
+          "Save";
 
       }
 
@@ -1735,14 +2310,17 @@
     }
 
 
-    /* ========================================
+    /* =========================================================
        TOAST
-       ======================================== */
+       ========================================================= */
 
-    let toastTimer = null;
+    let toastTimer =
+      null;
 
 
-    function showToast(message) {
+    function showToast(
+      message
+    ) {
 
       clearTimeout(
         toastTimer
@@ -1773,9 +2351,9 @@
     }
 
 
-    /* ========================================
+    /* =========================================================
        SIDEBAR
-       ======================================== */
+       ========================================================= */
 
     function toggleSidebar() {
 
@@ -1786,9 +2364,9 @@
     }
 
 
-    /* ========================================
+    /* =========================================================
        WPM
-       ======================================== */
+       ========================================================= */
 
     function getWpm() {
 
@@ -1845,8 +2423,12 @@
       }
 
 
-      wpmInput.value =
+      wpm =
         Math.round(wpm);
+
+
+      wpmInput.value =
+        wpm;
 
 
       updateProgress();
@@ -1854,9 +2436,9 @@
     }
 
 
-    /* ========================================
-       ORP
-       ======================================== */
+    /* =========================================================
+       ORP / RED FOCUS LETTER
+       ========================================================= */
 
     function getPivotCharacterIndex(
       word
@@ -1865,6 +2447,11 @@
       const characterPositions =
         [];
 
+
+      /*
+       * Ignore punctuation when deciding
+       * which character should be red.
+       */
 
       for (
         let i = 0;
@@ -1888,7 +2475,8 @@
 
 
       if (
-        characterPositions.length === 0
+        characterPositions.length ===
+        0
       ) {
 
         return 0;
@@ -1903,7 +2491,9 @@
       let pivotPosition;
 
 
-      if (length === 1) {
+      if (
+        length === 1
+      ) {
 
         pivotPosition = 0;
 
@@ -1935,7 +2525,8 @@
       pivotPosition =
         Math.min(
           pivotPosition,
-          characterPositions.length - 1
+          characterPositions.length -
+          1
         );
 
 
@@ -1946,9 +2537,9 @@
     }
 
 
-    /* ========================================
-       WORD POSITION
-       ======================================== */
+    /* =========================================================
+       WORD POSITIONING
+       ========================================================= */
 
     function positionWordOnPivot() {
 
@@ -1968,7 +2559,9 @@
     }
 
 
-    function displayWord(word) {
+    function displayWord(
+      word
+    ) {
 
       if (!word) {
         return;
@@ -2005,9 +2598,9 @@
     }
 
 
-    /* ========================================
-       TIME
-       ======================================== */
+    /* =========================================================
+       TIMING
+       ========================================================= */
 
     function getWordDuration() {
 
@@ -2032,8 +2625,11 @@
 
 
       const remainingWords =
-        words.length -
-        currentIndex;
+        Math.max(
+          0,
+          words.length -
+          currentIndex
+        );
 
 
       return (
@@ -2080,7 +2676,9 @@
         60;
 
 
-      if (hours > 0) {
+      if (
+        hours > 0
+      ) {
 
         return (
           `${hours}:` +
@@ -2108,9 +2706,9 @@
     }
 
 
-    /* ========================================
+    /* =========================================================
        PROGRESS
-       ======================================== */
+       ========================================================= */
 
     function updateProgress() {
 
@@ -2155,7 +2753,8 @@
         progress =
           currentIndex /
           (
-            words.length - 1
+            words.length -
+            1
           );
 
       }
@@ -2172,7 +2771,8 @@
 
 
       const progressPercent =
-        progress * 100;
+        progress *
+        100;
 
 
       progressSlider.value =
@@ -2204,9 +2804,9 @@
     }
 
 
-    /* ========================================
+    /* =========================================================
        PLAYBACK
-       ======================================== */
+       ========================================================= */
 
     function showCurrentWord() {
 
@@ -2267,11 +2867,16 @@
             showCurrentWord();
 
           },
+
           getWordDuration()
         );
 
     }
 
+
+    /* =========================================================
+       START
+       ========================================================= */
 
     function startReading() {
 
@@ -2292,12 +2897,14 @@
 
       validateWpmInput();
 
+
       clearTimeout(timer);
 
 
       words =
-        text.match(/\S+/g) ||
-        [];
+        text.match(
+          /\S+/g
+        ) || [];
 
 
       if (
@@ -2309,11 +2916,16 @@
       }
 
 
-      currentIndex = 0;
+      currentIndex =
+        0;
 
-      running = true;
 
-      paused = false;
+      running =
+        true;
+
+
+      paused =
+        false;
 
 
       progressSlider.min =
@@ -2322,7 +2934,8 @@
 
       progressSlider.max =
         Math.max(
-          words.length - 1,
+          words.length -
+          1,
           0
         );
 
@@ -2352,6 +2965,10 @@
     }
 
 
+    /* =========================================================
+       PAUSE / RESUME
+       ========================================================= */
+
     function togglePause() {
 
       if (!running) {
@@ -2361,7 +2978,9 @@
 
       if (paused) {
 
-        paused = false;
+        paused =
+          false;
+
 
         pauseButton.textContent =
           "Pause";
@@ -2371,7 +2990,9 @@
 
       } else {
 
-        paused = true;
+        paused =
+          true;
+
 
         pauseButton.textContent =
           "Resume";
@@ -2379,12 +3000,17 @@
 
         clearTimeout(timer);
 
+
         updateProgress();
 
       }
 
     }
 
+
+    /* =========================================================
+       RESTART
+       ========================================================= */
 
     function restartReading() {
 
@@ -2400,11 +3026,21 @@
       clearTimeout(timer);
 
 
-      currentIndex = 0;
+      currentIndex =
+        0;
 
-      running = true;
 
-      paused = true;
+      /*
+       * Restart at the beginning,
+       * but stay paused.
+       */
+
+      running =
+        true;
+
+
+      paused =
+        true;
 
 
       displayWord(
@@ -2429,6 +3065,10 @@
     }
 
 
+    /* =========================================================
+       FINISH
+       ========================================================= */
+
     function finishReading() {
 
       clearTimeout(timer);
@@ -2436,7 +3076,8 @@
 
       currentIndex =
         Math.max(
-          words.length - 1,
+          words.length -
+          1,
           0
         );
 
@@ -2454,9 +3095,12 @@
       }
 
 
-      running = false;
+      running =
+        false;
 
-      paused = false;
+
+      paused =
+        false;
 
 
       updateProgress();
@@ -2472,7 +3116,13 @@
     }
 
 
-    function seekToWord(index) {
+    /* =========================================================
+       SEEK
+       ========================================================= */
+
+    function seekToWord(
+      index
+    ) {
 
       if (
         words.length === 0
@@ -2491,7 +3141,8 @@
           0,
           Math.min(
             Number(index),
-            words.length - 1
+            words.length -
+            1
           )
         );
 
@@ -2503,11 +3154,20 @@
       );
 
 
+      /*
+       * If the reader had finished,
+       * seeking makes it resumable
+       * in a paused state.
+       */
+
       if (!running) {
 
-        running = true;
+        running =
+          true;
 
-        paused = true;
+
+        paused =
+          true;
 
 
         pauseButton.disabled =
@@ -2523,6 +3183,11 @@
       updateProgress();
 
 
+      /*
+       * If already playing,
+       * continue from new position.
+       */
+
       if (!paused) {
 
         showCurrentWord();
@@ -2532,22 +3197,29 @@
     }
 
 
-    /* ========================================
+    /* =========================================================
        RESET READER
-       ======================================== */
+       ========================================================= */
 
     function resetReader() {
 
       clearTimeout(timer);
 
 
-      words = [];
+      words =
+        [];
 
-      currentIndex = 0;
 
-      running = false;
+      currentIndex =
+        0;
 
-      paused = false;
+
+      running =
+        false;
+
+
+      paused =
+        false;
 
 
       progressSlider.min =
@@ -2578,6 +3250,11 @@
         "Pause";
 
 
+      /*
+       * Uses normal RSVP positioning so
+       * "Ready" remains joined together.
+       */
+
       displayWord(
         "Ready"
       );
@@ -2588,9 +3265,9 @@
     }
 
 
-    /* ========================================
+    /* =========================================================
        EVENTS
-       ======================================== */
+       ========================================================= */
 
     sidebarToggle.addEventListener(
       "click",
@@ -2640,9 +3317,18 @@
     );
 
 
+    /*
+     * Changing WPM updates the
+     * time estimate immediately.
+     */
+
     wpmInput.addEventListener(
       "input",
-      updateProgress
+      () => {
+
+        updateProgress();
+
+      }
     );
 
 
@@ -2670,6 +3356,54 @@
     );
 
 
+    /*
+     * Mark loaded text as changed.
+     */
+
+    textInput.addEventListener(
+      "input",
+      () => {
+
+        if (
+          activeSavedId
+        ) {
+
+          saveTextButton.textContent =
+            "Save changes";
+
+        }
+
+      }
+    );
+
+
+    /*
+     * Changing WPM also counts as
+     * changing a saved item.
+     */
+
+    wpmInput.addEventListener(
+      "input",
+      () => {
+
+        if (
+          activeSavedId
+        ) {
+
+          saveTextButton.textContent =
+            "Save changes";
+
+        }
+
+      }
+    );
+
+
+    /*
+     * Click outside context menu
+     * closes it.
+     */
+
     document.addEventListener(
       "click",
       event => {
@@ -2691,16 +3425,17 @@
     );
 
 
+    /*
+     * Keyboard shortcuts.
+     */
+
     document.addEventListener(
       "keydown",
       event => {
 
-        /*
-         * Escape closes menus/sidebar.
-         */
-
         if (
-          event.key === "Escape"
+          event.key ===
+          "Escape"
         ) {
 
           closeContextMenu();
@@ -2722,7 +3457,8 @@
 
 
         if (
-          event.code === "Space"
+          event.code ===
+          "Space"
         ) {
 
           event.preventDefault();
@@ -2741,60 +3477,40 @@
 
 
     /*
-     * Mark the current saved item as modified
-     * without automatically overwriting it.
+     * Recalculate RSVP position after
+     * the browser window changes size.
      */
 
-    textInput.addEventListener(
-      "input",
+    window.addEventListener(
+      "resize",
       () => {
 
-        if (activeSavedId) {
-
-          saveTextButton.textContent =
-            "Save changes";
-
-        }
+        positionWordOnPivot();
 
       }
     );
 
 
-    saveTextButton.addEventListener(
-      "click",
-      () => {
-
-        setTimeout(
-          () => {
-
-            saveTextButton.textContent =
-              "Save";
-
-          },
-          100
-        );
-
-      }
-    );
-
-
-    /* ========================================
+    /* =========================================================
        INITIALIZE
-       ======================================== */
+       ========================================================= */
 
     loadSavedTextsFromStorage();
 
     renderSavedTexts();
 
+    renderFancyTitle();
+
     resetReader();
 
 
     /*
-     * Start collapsed on mobile.
+     * Mobile starts with sidebar closed.
      */
 
     if (
-      window.innerWidth <= 760
+      window.innerWidth <=
+      760
     ) {
 
       sidebar.classList.add(
