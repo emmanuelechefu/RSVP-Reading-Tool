@@ -11,20 +11,255 @@
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
+      min-height: 100%;
+    }
+
+    body {
       min-height: 100vh;
-
       font-family: Arial, Helvetica, sans-serif;
-
       background: #090909;
       color: white;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    /* ========================================
+       APP LAYOUT
+       ======================================== */
+
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ========================================
+       SIDEBAR
+       ======================================== */
+
+    .sidebar {
+      width: 280px;
+      flex-shrink: 0;
+
+      background: #111111;
+
+      border-right: 1px solid #242424;
+
+      display: flex;
+      flex-direction: column;
+
+      transition:
+        width 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .sidebar.collapsed {
+      width: 0;
+      overflow: hidden;
+      border-right: 0;
+    }
+
+    .sidebar-header {
+      padding: 14px;
+
+      border-bottom: 1px solid #242424;
+    }
+
+    .new-text-button {
+      width: 100%;
+
+      border: 1px solid #333;
+      border-radius: 10px;
+
+      background: #1d1d1d;
+      color: white;
+
+      padding: 12px 14px;
+
+      cursor: pointer;
+
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .new-text-button:hover {
+      background: #292929;
+    }
+
+    .sidebar-section-title {
+      color: #888;
+
+      font-size: 12px;
+      font-weight: 600;
+
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+
+      padding: 18px 16px 8px;
+    }
+
+    .saved-list {
+      flex: 1;
+
+      overflow-y: auto;
+
+      padding: 4px 8px 14px;
+    }
+
+    .saved-empty {
+      color: #666;
+
+      font-size: 13px;
+      line-height: 1.5;
+
+      padding: 12px 8px;
+    }
+
+    .saved-item {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      width: 100%;
+
+      border-radius: 8px;
+
+      margin-bottom: 3px;
+
+      background: transparent;
+    }
+
+    .saved-item.active {
+      background: #242424;
+    }
+
+    .saved-title-button {
+      flex: 1;
+      min-width: 0;
+
+      border: 0;
+
+      background: transparent;
+      color: #e9e9e9;
+
+      cursor: pointer;
+
+      text-align: left;
+
+      padding: 10px 8px 10px 10px;
+
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .saved-title-button:hover {
+      background: #1c1c1c;
+      border-radius: 8px;
+    }
+
+    .saved-item.active .saved-title-button:hover {
+      background: #2a2a2a;
+    }
+
+    .saved-menu-button {
+      flex-shrink: 0;
+
+      width: 32px;
+      height: 32px;
+
+      border: 0;
+      border-radius: 6px;
+
+      background: transparent;
+      color: #999;
+
+      cursor: pointer;
+
+      opacity: 0;
+    }
+
+    .saved-item:hover .saved-menu-button,
+    .saved-item.active .saved-menu-button {
+      opacity: 1;
+    }
+
+    .saved-menu-button:hover {
+      background: #333;
+      color: white;
+    }
+
+    /* ========================================
+       CONTEXT MENU
+       ======================================== */
+
+    .context-menu {
+      position: fixed;
+
+      z-index: 100;
+
+      width: 150px;
+
+      padding: 6px;
+
+      border: 1px solid #333;
+      border-radius: 10px;
+
+      background: #1c1c1c;
+
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+
+      display: none;
+    }
+
+    .context-menu.open {
+      display: block;
+    }
+
+    .context-menu button {
+      width: 100%;
+
+      border: 0;
+      border-radius: 6px;
+
+      background: transparent;
+      color: white;
+
+      padding: 9px 10px;
+
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .context-menu button:hover {
+      background: #303030;
+    }
+
+    .context-menu .delete-option {
+      color: #ff7979;
+    }
+
+    /* ========================================
+       MAIN
+       ======================================== */
+
+    .main-area {
+      flex: 1;
+      min-width: 0;
+
+      position: relative;
+
+      padding: 32px 24px 60px;
 
       display: flex;
       justify-content: center;
-      align-items: center;
-
-      padding: 24px;
     }
 
     .app {
@@ -32,17 +267,72 @@
       max-width: 850px;
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 24px;
+    .top-bar {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      margin-bottom: 20px;
     }
 
-    /* =========================
-       CONTROLS
-       ========================= */
+    .sidebar-toggle {
+      flex-shrink: 0;
+
+      width: 42px;
+      height: 42px;
+
+      border: 1px solid #333;
+      border-radius: 9px;
+
+      background: #171717;
+      color: white;
+
+      cursor: pointer;
+
+      font-size: 20px;
+    }
+
+    .sidebar-toggle:hover {
+      background: #242424;
+    }
+
+    h1 {
+      flex: 1;
+
+      margin: 0;
+
+      text-align: center;
+
+      font-size: 28px;
+    }
+
+    .save-button {
+      flex-shrink: 0;
+
+      border: 1px solid #3b3b3b;
+      border-radius: 8px;
+
+      background: #1b1b1b;
+      color: white;
+
+      padding: 10px 14px;
+
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .save-button:hover {
+      background: #282828;
+    }
+
+    /* ========================================
+       INPUT
+       ======================================== */
 
     .controls {
       display: grid;
+
       gap: 14px;
 
       margin-bottom: 24px;
@@ -76,22 +366,13 @@
       display: flex;
       flex-wrap: wrap;
 
-      gap: 12px;
+      gap: 10px;
 
       align-items: center;
     }
 
-    button,
-    input {
-      font: inherit;
-    }
-
-    /* =========================
-       WPM INPUT
-       ========================= */
-
     .wpm-input {
-      width: 110px;
+      width: 105px;
 
       background: #161616;
       color: white;
@@ -108,11 +389,7 @@
       border-color: #777;
     }
 
-    /* =========================
-       BUTTONS
-       ========================= */
-
-    button {
+    .control-button {
       border: 0;
       border-radius: 8px;
 
@@ -126,18 +403,18 @@
       color: black;
     }
 
-    button:hover {
+    .control-button:hover {
       opacity: 0.88;
     }
 
-    button:disabled {
+    .control-button:disabled {
       opacity: 0.35;
       cursor: not-allowed;
     }
 
-    /* =========================
+    /* ========================================
        READER
-       ========================= */
+       ======================================== */
 
     .reader {
       position: relative;
@@ -151,11 +428,6 @@
 
       overflow: hidden;
     }
-
-    /*
-      Top and bottom indicators showing
-      the exact eye fixation point.
-    */
 
     .reader::before,
     .reader::after {
@@ -181,21 +453,6 @@
       bottom: 0;
     }
 
-    /* =========================
-       WORD POSITIONING
-       ========================= */
-
-    /*
-      The word is rendered as ONE continuous
-      inline-flex item.
-
-      JavaScript measures where the red pivot
-      letter is and moves the entire word so
-      that the centre of that letter sits at 50%.
-
-      This fixes the "R     eady" spacing issue.
-    */
-
     .word {
       position: absolute;
 
@@ -210,11 +467,6 @@
       font-size: clamp(36px, 8vw, 76px);
       font-weight: 600;
       line-height: 1;
-
-      /*
-        JavaScript adds the horizontal
-        translation dynamically.
-      */
 
       transform:
         translate(
@@ -234,9 +486,9 @@
       color: #ff4141;
     }
 
-    /* =========================
+    /* ========================================
        PROGRESS
-       ========================= */
+       ======================================== */
 
     .progress-area {
       margin-top: 18px;
@@ -258,8 +510,6 @@
 
       cursor: pointer;
     }
-
-    /* Chrome / Safari / Edge */
 
     .progress-slider::-webkit-slider-runnable-track {
       height: 8px;
@@ -292,12 +542,6 @@
 
       cursor: grab;
     }
-
-    .progress-slider::-webkit-slider-thumb:active {
-      cursor: grabbing;
-    }
-
-    /* Firefox */
 
     .progress-slider::-moz-range-track {
       height: 8px;
@@ -332,10 +576,6 @@
       cursor: default;
     }
 
-    /* =========================
-       PROGRESS INFORMATION
-       ========================= */
-
     .progress-info {
       display: flex;
 
@@ -345,7 +585,6 @@
       margin-top: 5px;
 
       font-size: 14px;
-
       color: #888;
     }
 
@@ -372,163 +611,378 @@
 
       margin-top: 15px;
     }
+
+    /* ========================================
+       TOAST
+       ======================================== */
+
+    .toast {
+      position: fixed;
+
+      left: 50%;
+      bottom: 24px;
+
+      z-index: 200;
+
+      transform: translateX(-50%) translateY(20px);
+
+      background: #242424;
+      color: white;
+
+      border: 1px solid #3a3a3a;
+      border-radius: 9px;
+
+      padding: 10px 14px;
+
+      font-size: 14px;
+
+      opacity: 0;
+      pointer-events: none;
+
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ========================================
+       MOBILE
+       ======================================== */
+
+    @media (max-width: 760px) {
+      .sidebar {
+        position: fixed;
+
+        left: 0;
+        top: 0;
+        bottom: 0;
+
+        z-index: 50;
+
+        width: 280px;
+
+        box-shadow: 20px 0 40px rgba(0, 0, 0, 0.45);
+      }
+
+      .sidebar.collapsed {
+        width: 280px;
+
+        transform: translateX(-100%);
+
+        border-right: 1px solid #242424;
+      }
+
+      .main-area {
+        padding:
+          18px
+          14px
+          50px;
+      }
+
+      h1 {
+        font-size: 21px;
+      }
+
+      .save-button {
+        padding: 9px 11px;
+      }
+
+      .reader {
+        height: 200px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-  <main class="app">
+  <div class="app-shell">
 
-    <h1>RSVP Speed Reader</h1>
+    <!-- ========================================
+         SIDEBAR
+         ======================================== -->
 
+    <aside
+      class="sidebar"
+      id="sidebar"
+    >
 
-    <!-- =========================
-         INPUT
-         ========================= -->
-
-    <section class="controls">
-
-      <textarea
-        id="textInput"
-        placeholder="Paste the text you want to speed read here..."
-      ></textarea>
-
-
-      <div class="control-row">
-
-        <label for="wpmInput">
-          Speed:
-        </label>
-
-
-        <input
-          id="wpmInput"
-          class="wpm-input"
-          type="number"
-          value="300"
-          min="1"
-          max="2500"
-          step="1"
-          inputmode="numeric"
-          aria-label="Words per minute"
-        />
-
-
-        <span>
-          WPM
-        </span>
-
-
-        <button id="startButton">
-          Start
-        </button>
-
+      <div class="sidebar-header">
 
         <button
-          id="pauseButton"
-          disabled
+          class="new-text-button"
+          id="newTextButton"
         >
-          Pause
-        </button>
-
-
-        <button
-          id="restartButton"
-          disabled
-        >
-          Restart
+          ＋ New text
         </button>
 
       </div>
 
-    </section>
 
+      <div class="sidebar-section-title">
+        Saved texts
+      </div>
 
-    <!-- =========================
-         READER
-         ========================= -->
-
-    <section class="reader">
 
       <div
-        class="word"
-        id="word"
-      >
+        class="saved-list"
+        id="savedList"
+      ></div>
 
-        <span
-          class="before"
-          id="before"
-        ></span><span
-          class="pivot"
-          id="pivot"
-        >R</span><span
-          class="after"
-          id="after"
-        >eady</span>
-
-      </div>
-
-    </section>
+    </aside>
 
 
-    <!-- =========================
-         PROGRESS
-         ========================= -->
+    <!-- ========================================
+         MAIN
+         ======================================== -->
 
-    <section class="progress-area">
+    <main class="main-area">
 
-      <input
-        id="progressSlider"
-        class="progress-slider"
-        type="range"
-        min="0"
-        max="0"
-        value="0"
-        step="1"
-        aria-label="Reading progress"
-        disabled
-      />
+      <div class="app">
 
+        <div class="top-bar">
 
-      <div class="progress-info">
-
-        <span id="wordCounter">
-          0 / 0
-        </span>
-
-
-        <div class="progress-right">
-
-          <span id="percentage">
-            0%
-          </span>
-
-          <span
-            class="time-remaining"
-            id="timeRemaining"
+          <button
+            class="sidebar-toggle"
+            id="sidebarToggle"
+            aria-label="Toggle saved texts sidebar"
+            title="Toggle saved texts"
           >
-            Time remaining: 0:00
-          </span>
+            ☰
+          </button>
 
+
+          <h1>
+            RSVP Speed Reader
+          </h1>
+
+
+          <button
+            class="save-button"
+            id="saveTextButton"
+          >
+            Save
+          </button>
+
+        </div>
+
+
+        <!-- ========================================
+             TEXT / CONTROLS
+             ======================================== -->
+
+        <section class="controls">
+
+          <textarea
+            id="textInput"
+            placeholder="Paste the text you want to speed read here..."
+          ></textarea>
+
+
+          <div class="control-row">
+
+            <label for="wpmInput">
+              Speed:
+            </label>
+
+
+            <input
+              id="wpmInput"
+              class="wpm-input"
+              type="number"
+              value="300"
+              min="1"
+              max="2500"
+              step="1"
+              inputmode="numeric"
+            />
+
+
+            <span>
+              WPM
+            </span>
+
+
+            <button
+              class="control-button"
+              id="startButton"
+            >
+              Start
+            </button>
+
+
+            <button
+              class="control-button"
+              id="pauseButton"
+              disabled
+            >
+              Pause
+            </button>
+
+
+            <button
+              class="control-button"
+              id="restartButton"
+              disabled
+            >
+              Restart
+            </button>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================================
+             READER
+             ======================================== -->
+
+        <section class="reader">
+
+          <div
+            class="word"
+            id="word"
+          >
+            <span
+              class="before"
+              id="before"
+            ></span><span
+              class="pivot"
+              id="pivot"
+            >R</span><span
+              class="after"
+              id="after"
+            >eady</span>
+          </div>
+
+        </section>
+
+
+        <!-- ========================================
+             PROGRESS
+             ======================================== -->
+
+        <section class="progress-area">
+
+          <input
+            id="progressSlider"
+            class="progress-slider"
+            type="range"
+            min="0"
+            max="0"
+            value="0"
+            step="1"
+            aria-label="Reading progress"
+            disabled
+          />
+
+
+          <div class="progress-info">
+
+            <span id="wordCounter">
+              0 / 0
+            </span>
+
+
+            <div class="progress-right">
+
+              <span id="percentage">
+                0%
+              </span>
+
+
+              <span
+                class="time-remaining"
+                id="timeRemaining"
+              >
+                Time remaining: 0:00
+              </span>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <div class="hint">
+          Press Space to pause/resume
         </div>
 
       </div>
 
-    </section>
+    </main>
+
+  </div>
 
 
-    <div class="hint">
-      Press Space to pause/resume
-    </div>
+  <!-- ========================================
+       SAVED TEXT MENU
+       ======================================== -->
 
-  </main>
+  <div
+    class="context-menu"
+    id="contextMenu"
+  >
+
+    <button id="renameSavedButton">
+      Rename
+    </button>
+
+    <button
+      class="delete-option"
+      id="deleteSavedButton"
+    >
+      Delete
+    </button>
+
+  </div>
+
+
+  <div
+    class="toast"
+    id="toast"
+  ></div>
 
 
   <script>
 
-    /* =========================
+    /* ========================================
        ELEMENTS
-       ========================= */
+       ======================================== */
+
+    const sidebar =
+      document.getElementById("sidebar");
+
+    const sidebarToggle =
+      document.getElementById("sidebarToggle");
+
+    const newTextButton =
+      document.getElementById("newTextButton");
+
+    const saveTextButton =
+      document.getElementById("saveTextButton");
+
+    const savedList =
+      document.getElementById("savedList");
+
+    const contextMenu =
+      document.getElementById("contextMenu");
+
+    const renameSavedButton =
+      document.getElementById("renameSavedButton");
+
+    const deleteSavedButton =
+      document.getElementById("deleteSavedButton");
+
+    const toast =
+      document.getElementById("toast");
+
 
     const textInput =
       document.getElementById("textInput");
@@ -570,9 +1024,20 @@
       document.getElementById("timeRemaining");
 
 
-    /* =========================
+    /* ========================================
        STATE
-       ========================= */
+       ======================================== */
+
+    const STORAGE_KEY =
+      "rsvp_saved_texts_v1";
+
+
+    let savedTexts = [];
+
+    let activeSavedId = null;
+
+    let contextMenuId = null;
+
 
     let words = [];
 
@@ -585,18 +1050,760 @@
     let paused = false;
 
 
-    /* =========================
+    /* ========================================
+       STORAGE
+       ======================================== */
+
+    function loadSavedTextsFromStorage() {
+
+      try {
+
+        const raw =
+          localStorage.getItem(
+            STORAGE_KEY
+          );
+
+
+        if (!raw) {
+
+          savedTexts = [];
+
+          return;
+
+        }
+
+
+        const parsed =
+          JSON.parse(raw);
+
+
+        savedTexts =
+          Array.isArray(parsed)
+            ? parsed
+            : [];
+
+      } catch (error) {
+
+        console.error(
+          "Could not load saved texts:",
+          error
+        );
+
+        savedTexts = [];
+
+      }
+
+    }
+
+
+    function persistSavedTexts() {
+
+      try {
+
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify(savedTexts)
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Could not save texts:",
+          error
+        );
+
+
+        showToast(
+          "Could not save to browser storage."
+        );
+
+      }
+
+    }
+
+
+    /* ========================================
+       TITLE GENERATION
+       ======================================== */
+
+    function generateTitle(text) {
+
+      const clean =
+        text
+          .replace(/\s+/g, " ")
+          .trim();
+
+
+      if (!clean) {
+
+        return "Untitled text";
+
+      }
+
+
+      const words =
+        clean.split(" ");
+
+
+      let title =
+        words
+          .slice(0, 7)
+          .join(" ");
+
+
+      if (title.length > 45) {
+
+        title =
+          title.slice(0, 45);
+
+      }
+
+
+      if (
+        clean.length >
+        title.length
+      ) {
+
+        title += "…";
+
+      }
+
+
+      return title;
+
+    }
+
+
+    /* ========================================
+       SAVE CURRENT TEXT
+       ======================================== */
+
+    function saveCurrentText() {
+
+      const text =
+        textInput.value.trim();
+
+
+      if (!text) {
+
+        showToast(
+          "Paste some text before saving."
+        );
+
+        return;
+
+      }
+
+
+      validateWpmInput();
+
+
+      /*
+       * If this text came from an existing
+       * saved item, update that item.
+       */
+
+      if (activeSavedId) {
+
+        const existing =
+          savedTexts.find(
+            item =>
+              item.id === activeSavedId
+          );
+
+
+        if (existing) {
+
+          existing.text =
+            textInput.value;
+
+          existing.wpm =
+            getWpm();
+
+          existing.updatedAt =
+            Date.now();
+
+
+          persistSavedTexts();
+
+          renderSavedTexts();
+
+
+          showToast(
+            "Saved changes."
+          );
+
+          return;
+
+        }
+
+      }
+
+
+      /*
+       * Otherwise create a new saved text.
+       */
+
+      const item = {
+
+        id:
+          createId(),
+
+        title:
+          generateTitle(text),
+
+        text:
+          textInput.value,
+
+        wpm:
+          getWpm(),
+
+        createdAt:
+          Date.now(),
+
+        updatedAt:
+          Date.now()
+
+      };
+
+
+      savedTexts.unshift(
+        item
+      );
+
+
+      activeSavedId =
+        item.id;
+
+
+      persistSavedTexts();
+
+      renderSavedTexts();
+
+
+      showToast(
+        "Text saved."
+      );
+
+    }
+
+
+    function createId() {
+
+      if (
+        window.crypto &&
+        crypto.randomUUID
+      ) {
+
+        return crypto.randomUUID();
+
+      }
+
+
+      return (
+        Date.now().toString(36) +
+        Math.random()
+          .toString(36)
+          .slice(2)
+      );
+
+    }
+
+
+    /* ========================================
+       RENDER SAVED TEXTS
+       ======================================== */
+
+    function renderSavedTexts() {
+
+      savedList.innerHTML = "";
+
+
+      if (
+        savedTexts.length === 0
+      ) {
+
+        const empty =
+          document.createElement(
+            "div"
+          );
+
+
+        empty.className =
+          "saved-empty";
+
+
+        empty.textContent =
+          "Your saved texts will appear here.";
+
+
+        savedList.appendChild(
+          empty
+        );
+
+
+        return;
+
+      }
+
+
+      /*
+       * Newest modified items first.
+       */
+
+      const sorted =
+        [...savedTexts].sort(
+          (a, b) =>
+            (b.updatedAt || 0) -
+            (a.updatedAt || 0)
+        );
+
+
+      sorted.forEach(item => {
+
+        const row =
+          document.createElement(
+            "div"
+          );
+
+
+        row.className =
+          "saved-item";
+
+
+        if (
+          item.id === activeSavedId
+        ) {
+
+          row.classList.add(
+            "active"
+          );
+
+        }
+
+
+        const titleButton =
+          document.createElement(
+            "button"
+          );
+
+
+        titleButton.className =
+          "saved-title-button";
+
+
+        titleButton.textContent =
+          item.title;
+
+
+        titleButton.title =
+          item.title;
+
+
+        titleButton.addEventListener(
+          "click",
+          () => {
+
+            loadSavedText(
+              item.id
+            );
+
+          }
+        );
+
+
+        const menuButton =
+          document.createElement(
+            "button"
+          );
+
+
+        menuButton.className =
+          "saved-menu-button";
+
+
+        menuButton.textContent =
+          "⋯";
+
+
+        menuButton.setAttribute(
+          "aria-label",
+          `Options for ${item.title}`
+        );
+
+
+        menuButton.addEventListener(
+          "click",
+          event => {
+
+            event.stopPropagation();
+
+
+            openContextMenu(
+              item.id,
+              menuButton
+            );
+
+          }
+        );
+
+
+        row.append(
+          titleButton,
+          menuButton
+        );
+
+
+        savedList.appendChild(
+          row
+        );
+
+      });
+
+    }
+
+
+    /* ========================================
+       LOAD SAVED TEXT
+       ======================================== */
+
+    function loadSavedText(id) {
+
+      const item =
+        savedTexts.find(
+          saved =>
+            saved.id === id
+        );
+
+
+      if (!item) {
+        return;
+      }
+
+
+      activeSavedId =
+        item.id;
+
+
+      textInput.value =
+        item.text;
+
+
+      wpmInput.value =
+        item.wpm || 300;
+
+
+      resetReader();
+
+
+      renderSavedTexts();
+
+
+      /*
+       * On small screens, close sidebar
+       * after choosing an item.
+       */
+
+      if (
+        window.innerWidth <= 760
+      ) {
+
+        sidebar.classList.add(
+          "collapsed"
+        );
+
+      }
+
+    }
+
+
+    /* ========================================
+       NEW TEXT
+       ======================================== */
+
+    function newText() {
+
+      clearTimeout(timer);
+
+
+      activeSavedId = null;
+
+
+      textInput.value = "";
+
+      wpmInput.value = 300;
+
+
+      resetReader();
+
+      renderSavedTexts();
+
+
+      textInput.focus();
+
+
+      if (
+        window.innerWidth <= 760
+      ) {
+
+        sidebar.classList.add(
+          "collapsed"
+        );
+
+      }
+
+    }
+
+
+    /* ========================================
+       RENAME / DELETE
+       ======================================== */
+
+    function openContextMenu(
+      id,
+      button
+    ) {
+
+      contextMenuId =
+        id;
+
+
+      const rect =
+        button.getBoundingClientRect();
+
+
+      contextMenu.style.left =
+        `${Math.max(
+          8,
+          rect.right - 150
+        )}px`;
+
+
+      contextMenu.style.top =
+        `${rect.bottom + 4}px`;
+
+
+      contextMenu.classList.add(
+        "open"
+      );
+
+    }
+
+
+    function closeContextMenu() {
+
+      contextMenu.classList.remove(
+        "open"
+      );
+
+
+      contextMenuId = null;
+
+    }
+
+
+    function renameSavedText() {
+
+      if (!contextMenuId) {
+        return;
+      }
+
+
+      const item =
+        savedTexts.find(
+          saved =>
+            saved.id ===
+            contextMenuId
+        );
+
+
+      if (!item) {
+        return;
+      }
+
+
+      const newTitle =
+        prompt(
+          "Rename saved text:",
+          item.title
+        );
+
+
+      if (newTitle === null) {
+
+        closeContextMenu();
+
+        return;
+
+      }
+
+
+      const clean =
+        newTitle.trim();
+
+
+      if (!clean) {
+
+        closeContextMenu();
+
+        return;
+
+      }
+
+
+      item.title =
+        clean;
+
+
+      item.updatedAt =
+        Date.now();
+
+
+      persistSavedTexts();
+
+      renderSavedTexts();
+
+      closeContextMenu();
+
+    }
+
+
+    function deleteSavedText() {
+
+      if (!contextMenuId) {
+        return;
+      }
+
+
+      const item =
+        savedTexts.find(
+          saved =>
+            saved.id ===
+            contextMenuId
+        );
+
+
+      if (!item) {
+        return;
+      }
+
+
+      const confirmed =
+        confirm(
+          `Delete "${item.title}"?`
+        );
+
+
+      if (!confirmed) {
+
+        closeContextMenu();
+
+        return;
+
+      }
+
+
+      savedTexts =
+        savedTexts.filter(
+          saved =>
+            saved.id !== item.id
+        );
+
+
+      if (
+        activeSavedId ===
+        item.id
+      ) {
+
+        activeSavedId =
+          null;
+
+      }
+
+
+      persistSavedTexts();
+
+      renderSavedTexts();
+
+      closeContextMenu();
+
+
+      showToast(
+        "Saved text deleted."
+      );
+
+    }
+
+
+    /* ========================================
+       TOAST
+       ======================================== */
+
+    let toastTimer = null;
+
+
+    function showToast(message) {
+
+      clearTimeout(
+        toastTimer
+      );
+
+
+      toast.textContent =
+        message;
+
+
+      toast.classList.add(
+        "show"
+      );
+
+
+      toastTimer =
+        setTimeout(
+          () => {
+
+            toast.classList.remove(
+              "show"
+            );
+
+          },
+          1800
+        );
+
+    }
+
+
+    /* ========================================
+       SIDEBAR
+       ======================================== */
+
+    function toggleSidebar() {
+
+      sidebar.classList.toggle(
+        "collapsed"
+      );
+
+    }
+
+
+    /* ========================================
        WPM
-       ========================= */
+       ======================================== */
 
     function getWpm() {
 
       let wpm =
-        Number(wpmInput.value);
+        Number(
+          wpmInput.value
+        );
 
 
-      if (!Number.isFinite(wpm)) {
+      if (
+        !Number.isFinite(wpm)
+      ) {
+
         wpm = 300;
+
       }
 
 
@@ -614,16 +1821,27 @@
     function validateWpmInput() {
 
       let wpm =
-        Number(wpmInput.value);
+        Number(
+          wpmInput.value
+        );
 
 
-      if (!Number.isFinite(wpm) || wpm < 1) {
+      if (
+        !Number.isFinite(wpm) ||
+        wpm < 1
+      ) {
+
         wpm = 1;
+
       }
 
 
-      if (wpm > 2500) {
+      if (
+        wpm > 2500
+      ) {
+
         wpm = 2500;
+
       }
 
 
@@ -636,19 +1854,17 @@
     }
 
 
-    /* =========================
-       ORP / RED LETTER
-       ========================= */
+    /* ========================================
+       ORP
+       ======================================== */
 
-    function getPivotCharacterIndex(word) {
+    function getPivotCharacterIndex(
+      word
+    ) {
 
-      const characterPositions = [];
+      const characterPositions =
+        [];
 
-
-      /*
-       * Ignore punctuation when determining
-       * the recognition point.
-       */
 
       for (
         let i = 0;
@@ -662,7 +1878,9 @@
           )
         ) {
 
-          characterPositions.push(i);
+          characterPositions.push(
+            i
+          );
 
         }
 
@@ -689,15 +1907,21 @@
 
         pivotPosition = 0;
 
-      } else if (length <= 5) {
+      } else if (
+        length <= 5
+      ) {
 
         pivotPosition = 1;
 
-      } else if (length <= 9) {
+      } else if (
+        length <= 9
+      ) {
 
         pivotPosition = 2;
 
-      } else if (length <= 13) {
+      } else if (
+        length <= 13
+      ) {
 
         pivotPosition = 3;
 
@@ -722,30 +1946,19 @@
     }
 
 
-    /* =========================
-       PIVOT POSITION
-       ========================= */
+    /* ========================================
+       WORD POSITION
+       ======================================== */
 
     function positionWordOnPivot() {
-
-      /*
-       * Because .word begins at left: 50%,
-       * determine how far the centre of the
-       * pivot letter is from the beginning
-       * of the word.
-       */
 
       const pivotCenter =
         pivotElement.offsetLeft +
         (
-          pivotElement.offsetWidth / 2
+          pivotElement.offsetWidth /
+          2
         );
 
-
-      /*
-       * Shift the complete word left by
-       * that exact amount.
-       */
 
       wordElement.style.setProperty(
         "--pivot-shift",
@@ -755,10 +1968,6 @@
     }
 
 
-    /* =========================
-       DISPLAY WORD
-       ========================= */
-
     function displayWord(word) {
 
       if (!word) {
@@ -767,7 +1976,9 @@
 
 
       const pivotIndex =
-        getPivotCharacterIndex(word);
+        getPivotCharacterIndex(
+          word
+        );
 
 
       beforeElement.textContent =
@@ -778,7 +1989,9 @@
 
 
       pivotElement.textContent =
-        word[pivotIndex];
+        word[
+          pivotIndex
+        ];
 
 
       afterElement.textContent =
@@ -787,54 +2000,40 @@
         );
 
 
-      /*
-       * Reading offsetLeft forces the browser
-       * to calculate the new text layout.
-       */
-
       positionWordOnPivot();
 
     }
 
 
-    /* =========================
-       WORD DURATION
-       ========================= */
+    /* ========================================
+       TIME
+       ======================================== */
 
     function getWordDuration() {
 
-      return 60000 / getWpm();
+      return (
+        60000 /
+        getWpm()
+      );
 
     }
 
 
-    /* =========================
-       TIME REMAINING
-       ========================= */
-
     function getRemainingMilliseconds() {
 
-      if (words.length === 0) {
+      if (
+        words.length === 0 ||
+        !running
+      ) {
+
         return 0;
+
       }
 
-
-      /*
-       * Finished reading.
-       */
-
-      if (!running) {
-        return 0;
-      }
-
-
-      /*
-       * Include the word currently
-       * being displayed.
-       */
 
       const remainingWords =
-        words.length - currentIndex;
+        words.length -
+        currentIndex;
 
 
       return (
@@ -845,50 +2044,82 @@
     }
 
 
-    function formatDuration(milliseconds) {
-
-      /*
-       * Round upward so something like
-       * 3.2 seconds displays as 0:04,
-       * rather than prematurely showing 0:03.
-       */
+    function formatDuration(
+      milliseconds
+    ) {
 
       const totalSeconds =
         Math.max(
           0,
           Math.ceil(
-            milliseconds / 1000
+            milliseconds /
+            1000
           )
+        );
+
+
+      const hours =
+        Math.floor(
+          totalSeconds /
+          3600
         );
 
 
       const minutes =
         Math.floor(
-          totalSeconds / 60
+          (
+            totalSeconds %
+            3600
+          ) /
+          60
         );
 
 
       const seconds =
-        totalSeconds % 60;
+        totalSeconds %
+        60;
+
+
+      if (hours > 0) {
+
+        return (
+          `${hours}:` +
+          `${String(minutes).padStart(
+            2,
+            "0"
+          )}:` +
+          `${String(seconds).padStart(
+            2,
+            "0"
+          )}`
+        );
+
+      }
 
 
       return (
         `${minutes}:` +
-        `${String(seconds).padStart(2, "0")}`
+        `${String(seconds).padStart(
+          2,
+          "0"
+        )}`
       );
 
     }
 
 
-    /* =========================
+    /* ========================================
        PROGRESS
-       ========================= */
+       ======================================== */
 
     function updateProgress() {
 
-      if (words.length === 0) {
+      if (
+        words.length === 0
+      ) {
 
-        progressSlider.value = 0;
+        progressSlider.value =
+          0;
 
 
         progressSlider.style.setProperty(
@@ -917,11 +2148,15 @@
       let progress = 0;
 
 
-      if (words.length > 1) {
+      if (
+        words.length > 1
+      ) {
 
         progress =
           currentIndex /
-          (words.length - 1);
+          (
+            words.length - 1
+          );
 
       }
 
@@ -955,7 +2190,9 @@
 
 
       percentage.textContent =
-        `${Math.round(progressPercent)}%`;
+        `${Math.round(
+          progressPercent
+        )}%`;
 
 
       timeRemaining.textContent =
@@ -967,9 +2204,9 @@
     }
 
 
-    /* =========================
+    /* ========================================
        PLAYBACK
-       ========================= */
+       ======================================== */
 
     function showCurrentWord() {
 
@@ -999,7 +2236,9 @@
 
 
       displayWord(
-        words[currentIndex]
+        words[
+          currentIndex
+        ]
       );
 
 
@@ -1028,16 +2267,11 @@
             showCurrentWord();
 
           },
-
           getWordDuration()
         );
 
     }
 
-
-    /* =========================
-       START
-       ========================= */
 
     function startReading() {
 
@@ -1047,7 +2281,7 @@
 
       if (!text) {
 
-        alert(
+        showToast(
           "Paste some text first."
         );
 
@@ -1058,12 +2292,12 @@
 
       validateWpmInput();
 
-
       clearTimeout(timer);
 
 
       words =
-        text.match(/\S+/g) || [];
+        text.match(/\S+/g) ||
+        [];
 
 
       if (
@@ -1082,7 +2316,9 @@
       paused = false;
 
 
-      progressSlider.min = 0;
+      progressSlider.min =
+        0;
+
 
       progressSlider.max =
         Math.max(
@@ -1090,7 +2326,10 @@
           0
         );
 
-      progressSlider.value = 0;
+
+      progressSlider.value =
+        0;
+
 
       progressSlider.disabled =
         false;
@@ -1099,8 +2338,10 @@
       pauseButton.disabled =
         false;
 
+
       restartButton.disabled =
         false;
+
 
       pauseButton.textContent =
         "Pause";
@@ -1110,10 +2351,6 @@
 
     }
 
-
-    /* =========================
-       PAUSE / RESUME
-       ========================= */
 
     function togglePause() {
 
@@ -1149,10 +2386,6 @@
     }
 
 
-    /* =========================
-       RESTART
-       ========================= */
-
     function restartReading() {
 
       if (
@@ -1169,19 +2402,13 @@
 
       currentIndex = 0;
 
-
-      /*
-       * Reset to beginning,
-       * but remain paused.
-       */
-
       running = true;
 
       paused = true;
 
 
       displayWord(
-        words[currentIndex]
+        words[0]
       );
 
 
@@ -1190,6 +2417,7 @@
 
       pauseButton.disabled =
         false;
+
 
       pauseButton.textContent =
         "Resume";
@@ -1200,10 +2428,6 @@
 
     }
 
-
-    /* =========================
-       FINISH
-       ========================= */
 
     function finishReading() {
 
@@ -1222,7 +2446,9 @@
       ) {
 
         displayWord(
-          words[currentIndex]
+          words[
+            currentIndex
+          ]
         );
 
       }
@@ -1239,15 +2465,12 @@
       pauseButton.disabled =
         true;
 
+
       pauseButton.textContent =
         "Pause";
 
     }
 
-
-    /* =========================
-       SEEK
-       ========================= */
 
     function seekToWord(index) {
 
@@ -1274,14 +2497,11 @@
 
 
       displayWord(
-        words[currentIndex]
+        words[
+          currentIndex
+        ]
       );
 
-
-      /*
-       * Seeking backward after the reader
-       * finished should make it resumable.
-       */
 
       if (!running) {
 
@@ -1293,6 +2513,7 @@
         pauseButton.disabled =
           false;
 
+
         pauseButton.textContent =
           "Resume";
 
@@ -1301,11 +2522,6 @@
 
       updateProgress();
 
-
-      /*
-       * Continue immediately if the reader
-       * was already playing.
-       */
 
       if (!paused) {
 
@@ -1316,9 +2532,83 @@
     }
 
 
-    /* =========================
+    /* ========================================
+       RESET READER
+       ======================================== */
+
+    function resetReader() {
+
+      clearTimeout(timer);
+
+
+      words = [];
+
+      currentIndex = 0;
+
+      running = false;
+
+      paused = false;
+
+
+      progressSlider.min =
+        0;
+
+
+      progressSlider.max =
+        0;
+
+
+      progressSlider.value =
+        0;
+
+
+      progressSlider.disabled =
+        true;
+
+
+      pauseButton.disabled =
+        true;
+
+
+      restartButton.disabled =
+        true;
+
+
+      pauseButton.textContent =
+        "Pause";
+
+
+      displayWord(
+        "Ready"
+      );
+
+
+      updateProgress();
+
+    }
+
+
+    /* ========================================
        EVENTS
-       ========================= */
+       ======================================== */
+
+    sidebarToggle.addEventListener(
+      "click",
+      toggleSidebar
+    );
+
+
+    newTextButton.addEventListener(
+      "click",
+      newText
+    );
+
+
+    saveTextButton.addEventListener(
+      "click",
+      saveCurrentText
+    );
+
 
     startButton.addEventListener(
       "click",
@@ -1350,25 +2640,11 @@
     );
 
 
-    /*
-     * Update the time estimate immediately
-     * when WPM is edited.
-     */
-
     wpmInput.addEventListener(
       "input",
-      () => {
-
-        updateProgress();
-
-      }
+      updateProgress
     );
 
-
-    /*
-     * Enforce 1–2500 WPM once the user
-     * commits/leaves the field.
-     */
 
     wpmInput.addEventListener(
       "change",
@@ -1382,13 +2658,57 @@
     );
 
 
-    /*
-     * Spacebar pause / resume.
-     */
+    renameSavedButton.addEventListener(
+      "click",
+      renameSavedText
+    );
+
+
+    deleteSavedButton.addEventListener(
+      "click",
+      deleteSavedText
+    );
+
+
+    document.addEventListener(
+      "click",
+      event => {
+
+        if (
+          !contextMenu.contains(
+            event.target
+          ) &&
+          !event.target.closest(
+            ".saved-menu-button"
+          )
+        ) {
+
+          closeContextMenu();
+
+        }
+
+      }
+    );
+
 
     document.addEventListener(
       "keydown",
       event => {
+
+        /*
+         * Escape closes menus/sidebar.
+         */
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          closeContextMenu();
+
+          return;
+
+        }
+
 
         const editable =
           event.target.matches(
@@ -1420,24 +2740,68 @@
     );
 
 
-    /* =========================
-       INITIAL READY WORD
-       ========================= */
-
     /*
-     * Run it through the same positioning
-     * system as normal RSVP words.
-
-     * This specifically fixes:
-     *
-     * R       eady
-     *
-     * and renders:
-     *
-     * Ready
+     * Mark the current saved item as modified
+     * without automatically overwriting it.
      */
 
-    displayWord("Ready");
+    textInput.addEventListener(
+      "input",
+      () => {
+
+        if (activeSavedId) {
+
+          saveTextButton.textContent =
+            "Save changes";
+
+        }
+
+      }
+    );
+
+
+    saveTextButton.addEventListener(
+      "click",
+      () => {
+
+        setTimeout(
+          () => {
+
+            saveTextButton.textContent =
+              "Save";
+
+          },
+          100
+        );
+
+      }
+    );
+
+
+    /* ========================================
+       INITIALIZE
+       ======================================== */
+
+    loadSavedTextsFromStorage();
+
+    renderSavedTexts();
+
+    resetReader();
+
+
+    /*
+     * Start collapsed on mobile.
+     */
+
+    if (
+      window.innerWidth <= 760
+    ) {
+
+      sidebar.classList.add(
+        "collapsed"
+      );
+
+    }
 
   </script>
 
