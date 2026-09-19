@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>RSVP Speed Reader</title>
 
   <style>
@@ -13,12 +14,16 @@
     body {
       margin: 0;
       min-height: 100vh;
+
       font-family: Arial, Helvetica, sans-serif;
+
       background: #090909;
       color: white;
+
       display: flex;
       justify-content: center;
       align-items: center;
+
       padding: 24px;
     }
 
@@ -32,23 +37,34 @@
       margin-bottom: 24px;
     }
 
+    /* =========================
+       CONTROLS
+       ========================= */
+
     .controls {
       display: grid;
       gap: 14px;
+
       margin-bottom: 24px;
     }
 
     textarea {
       width: 100%;
       min-height: 180px;
+
       resize: vertical;
+
       background: #161616;
       color: white;
+
       border: 1px solid #333;
       border-radius: 10px;
+
       padding: 16px;
+
       font-size: 16px;
       line-height: 1.5;
+
       outline: none;
     }
 
@@ -59,29 +75,53 @@
     .control-row {
       display: flex;
       flex-wrap: wrap;
+
       gap: 12px;
+
       align-items: center;
     }
 
-    select,
-    button {
+    button,
+    input {
       font: inherit;
     }
 
-    select {
+    /* =========================
+       WPM INPUT
+       ========================= */
+
+    .wpm-input {
+      width: 110px;
+
       background: #161616;
       color: white;
+
       border: 1px solid #333;
       border-radius: 8px;
-      padding: 10px 14px;
+
+      padding: 10px 12px;
+
+      outline: none;
     }
+
+    .wpm-input:focus {
+      border-color: #777;
+    }
+
+    /* =========================
+       BUTTONS
+       ========================= */
 
     button {
       border: 0;
       border-radius: 8px;
+
       padding: 11px 18px;
+
       cursor: pointer;
+
       font-weight: 600;
+
       background: white;
       color: black;
     }
@@ -95,26 +135,41 @@
       cursor: not-allowed;
     }
 
+    /* =========================
+       READER
+       ========================= */
+
     .reader {
       position: relative;
+
       height: 250px;
+
       background: #0d0d0d;
+
       border: 1px solid #222;
       border-radius: 14px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+
       overflow: hidden;
     }
+
+    /*
+      Top and bottom indicators showing
+      the exact eye fixation point.
+    */
 
     .reader::before,
     .reader::after {
       content: "";
+
       position: absolute;
+
       left: 50%;
+
       width: 2px;
       height: 22px;
+
       background: #383838;
+
       transform: translateX(-50%);
     }
 
@@ -126,34 +181,61 @@
       bottom: 0;
     }
 
+    /* =========================
+       WORD POSITIONING
+       ========================= */
+
+    /*
+      The word is rendered as ONE continuous
+      inline-flex item.
+
+      JavaScript measures where the red pivot
+      letter is and moves the entire word so
+      that the centre of that letter sits at 50%.
+
+      This fixes the "R     eady" spacing issue.
+    */
+
     .word {
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      display: inline-flex;
       align-items: baseline;
+
+      white-space: pre;
+
       font-size: clamp(36px, 8vw, 76px);
       font-weight: 600;
       line-height: 1;
-      padding: 0 24px;
+
+      /*
+        JavaScript adds the horizontal
+        translation dynamically.
+      */
+
+      transform:
+        translate(
+          var(--pivot-shift, 0px),
+          -50%
+        );
     }
 
-    .before {
-      text-align: right;
+    .before,
+    .pivot,
+    .after {
+      display: inline;
       white-space: pre;
     }
 
     .pivot {
       color: #ff4141;
-      white-space: pre;
-    }
-
-    .after {
-      text-align: left;
-      white-space: pre;
     }
 
     /* =========================
-       INTERACTIVE PROGRESS BAR
+       PROGRESS
        ========================= */
 
     .progress-area {
@@ -165,6 +247,7 @@
 
       width: 100%;
       height: 18px;
+
       margin: 0;
       padding: 0;
 
@@ -172,13 +255,17 @@
       -webkit-appearance: none;
 
       background: transparent;
+
       cursor: pointer;
     }
 
-    /* Chrome / Edge / Safari */
+    /* Chrome / Safari / Edge */
+
     .progress-slider::-webkit-slider-runnable-track {
       height: 8px;
+
       border-radius: 999px;
+
       background:
         linear-gradient(
           to right,
@@ -198,6 +285,7 @@
       margin-top: -5px;
 
       border-radius: 50%;
+
       border: 2px solid white;
 
       background: #090909;
@@ -207,19 +295,23 @@
 
     .progress-slider::-webkit-slider-thumb:active {
       cursor: grabbing;
-      transform: scale(1.15);
     }
 
     /* Firefox */
+
     .progress-slider::-moz-range-track {
       height: 8px;
+
       border-radius: 999px;
+
       background: #222;
     }
 
     .progress-slider::-moz-range-progress {
       height: 8px;
+
       border-radius: 999px;
+
       background: white;
     }
 
@@ -231,6 +323,7 @@
       border-radius: 50%;
 
       background: #090909;
+
       cursor: grab;
     }
 
@@ -239,18 +332,44 @@
       cursor: default;
     }
 
+    /* =========================
+       PROGRESS INFORMATION
+       ========================= */
+
     .progress-info {
       display: flex;
+
       justify-content: space-between;
-      margin-top: 4px;
+      align-items: flex-start;
+
+      margin-top: 5px;
+
       font-size: 14px;
+
       color: #888;
+    }
+
+    .progress-right {
+      display: flex;
+      flex-direction: column;
+
+      align-items: flex-end;
+
+      gap: 5px;
+    }
+
+    .time-remaining {
+      font-size: 12px;
+      color: #666;
     }
 
     .hint {
       text-align: center;
+
       color: #666;
+
       font-size: 13px;
+
       margin-top: 15px;
     }
   </style>
@@ -262,6 +381,11 @@
 
     <h1>RSVP Speed Reader</h1>
 
+
+    <!-- =========================
+         INPUT
+         ========================= -->
+
     <section class="controls">
 
       <textarea
@@ -269,32 +393,36 @@
         placeholder="Paste the text you want to speed read here..."
       ></textarea>
 
+
       <div class="control-row">
 
-        <label for="wpmSelect">
+        <label for="wpmInput">
           Speed:
         </label>
 
-        <select id="wpmSelect">
-          <option value="100">100 WPM</option>
-          <option value="150">150 WPM</option>
-          <option value="200">200 WPM</option>
-          <option value="250">250 WPM</option>
-          <option value="300" selected>300 WPM</option>
-          <option value="350">350 WPM</option>
-          <option value="400">400 WPM</option>
-          <option value="450">450 WPM</option>
-          <option value="500">500 WPM</option>
-          <option value="600">600 WPM</option>
-          <option value="700">700 WPM</option>
-          <option value="800">800 WPM</option>
-          <option value="900">900 WPM</option>
-          <option value="1000">1000 WPM</option>
-        </select>
+
+        <input
+          id="wpmInput"
+          class="wpm-input"
+          type="number"
+          value="300"
+          min="1"
+          max="2500"
+          step="1"
+          inputmode="numeric"
+          aria-label="Words per minute"
+        />
+
+
+        <span>
+          WPM
+        </span>
+
 
         <button id="startButton">
           Start
         </button>
+
 
         <button
           id="pauseButton"
@@ -302,6 +430,7 @@
         >
           Pause
         </button>
+
 
         <button
           id="restartButton"
@@ -315,33 +444,36 @@
     </section>
 
 
+    <!-- =========================
+         READER
+         ========================= -->
+
     <section class="reader">
 
-      <div class="word">
+      <div
+        class="word"
+        id="word"
+      >
 
         <span
           class="before"
           id="before"
-        ></span>
-
-        <span
+        ></span><span
           class="pivot"
           id="pivot"
-        >
-          R
-        </span>
-
-        <span
+        >R</span><span
           class="after"
           id="after"
-        >
-          eady
-        </span>
+        >eady</span>
 
       </div>
 
     </section>
 
+
+    <!-- =========================
+         PROGRESS
+         ========================= -->
 
     <section class="progress-area">
 
@@ -357,15 +489,28 @@
         disabled
       />
 
+
       <div class="progress-info">
 
         <span id="wordCounter">
           0 / 0
         </span>
 
-        <span id="percentage">
-          0%
-        </span>
+
+        <div class="progress-right">
+
+          <span id="percentage">
+            0%
+          </span>
+
+          <span
+            class="time-remaining"
+            id="timeRemaining"
+          >
+            Time remaining: 0:00
+          </span>
+
+        </div>
 
       </div>
 
@@ -388,8 +533,8 @@
     const textInput =
       document.getElementById("textInput");
 
-    const wpmSelect =
-      document.getElementById("wpmSelect");
+    const wpmInput =
+      document.getElementById("wpmInput");
 
     const startButton =
       document.getElementById("startButton");
@@ -399,6 +544,9 @@
 
     const restartButton =
       document.getElementById("restartButton");
+
+    const wordElement =
+      document.getElementById("word");
 
     const beforeElement =
       document.getElementById("before");
@@ -418,6 +566,9 @@
     const percentage =
       document.getElementById("percentage");
 
+    const timeRemaining =
+      document.getElementById("timeRemaining");
+
 
     /* =========================
        STATE
@@ -435,6 +586,57 @@
 
 
     /* =========================
+       WPM
+       ========================= */
+
+    function getWpm() {
+
+      let wpm =
+        Number(wpmInput.value);
+
+
+      if (!Number.isFinite(wpm)) {
+        wpm = 300;
+      }
+
+
+      return Math.max(
+        1,
+        Math.min(
+          2500,
+          wpm
+        )
+      );
+
+    }
+
+
+    function validateWpmInput() {
+
+      let wpm =
+        Number(wpmInput.value);
+
+
+      if (!Number.isFinite(wpm) || wpm < 1) {
+        wpm = 1;
+      }
+
+
+      if (wpm > 2500) {
+        wpm = 2500;
+      }
+
+
+      wpmInput.value =
+        Math.round(wpm);
+
+
+      updateProgress();
+
+    }
+
+
+    /* =========================
        ORP / RED LETTER
        ========================= */
 
@@ -442,27 +644,43 @@
 
       const characterPositions = [];
 
+
       /*
        * Ignore punctuation when determining
-       * which letter should be the pivot.
+       * the recognition point.
        */
 
-      for (let i = 0; i < word.length; i++) {
+      for (
+        let i = 0;
+        i < word.length;
+        i++
+      ) {
 
-        if (/[\p{L}\p{N}]/u.test(word[i])) {
+        if (
+          /[\p{L}\p{N}]/u.test(
+            word[i]
+          )
+        ) {
+
           characterPositions.push(i);
+
         }
 
       }
 
 
-      if (characterPositions.length === 0) {
+      if (
+        characterPositions.length === 0
+      ) {
+
         return 0;
+
       }
 
 
       const length =
         characterPositions.length;
+
 
       let pivotPosition;
 
@@ -497,7 +715,42 @@
         );
 
 
-      return characterPositions[pivotPosition];
+      return characterPositions[
+        pivotPosition
+      ];
+
+    }
+
+
+    /* =========================
+       PIVOT POSITION
+       ========================= */
+
+    function positionWordOnPivot() {
+
+      /*
+       * Because .word begins at left: 50%,
+       * determine how far the centre of the
+       * pivot letter is from the beginning
+       * of the word.
+       */
+
+      const pivotCenter =
+        pivotElement.offsetLeft +
+        (
+          pivotElement.offsetWidth / 2
+        );
+
+
+      /*
+       * Shift the complete word left by
+       * that exact amount.
+       */
+
+      wordElement.style.setProperty(
+        "--pivot-shift",
+        `${-pivotCenter}px`
+      );
 
     }
 
@@ -518,13 +771,111 @@
 
 
       beforeElement.textContent =
-        word.slice(0, pivotIndex);
+        word.slice(
+          0,
+          pivotIndex
+        );
+
 
       pivotElement.textContent =
         word[pivotIndex];
 
+
       afterElement.textContent =
-        word.slice(pivotIndex + 1);
+        word.slice(
+          pivotIndex + 1
+        );
+
+
+      /*
+       * Reading offsetLeft forces the browser
+       * to calculate the new text layout.
+       */
+
+      positionWordOnPivot();
+
+    }
+
+
+    /* =========================
+       WORD DURATION
+       ========================= */
+
+    function getWordDuration() {
+
+      return 60000 / getWpm();
+
+    }
+
+
+    /* =========================
+       TIME REMAINING
+       ========================= */
+
+    function getRemainingMilliseconds() {
+
+      if (words.length === 0) {
+        return 0;
+      }
+
+
+      /*
+       * Finished reading.
+       */
+
+      if (!running) {
+        return 0;
+      }
+
+
+      /*
+       * Include the word currently
+       * being displayed.
+       */
+
+      const remainingWords =
+        words.length - currentIndex;
+
+
+      return (
+        remainingWords *
+        getWordDuration()
+      );
+
+    }
+
+
+    function formatDuration(milliseconds) {
+
+      /*
+       * Round upward so something like
+       * 3.2 seconds displays as 0:04,
+       * rather than prematurely showing 0:03.
+       */
+
+      const totalSeconds =
+        Math.max(
+          0,
+          Math.ceil(
+            milliseconds / 1000
+          )
+        );
+
+
+      const minutes =
+        Math.floor(
+          totalSeconds / 60
+        );
+
+
+      const seconds =
+        totalSeconds % 60;
+
+
+      return (
+        `${minutes}:` +
+        `${String(seconds).padStart(2, "0")}`
+      );
 
     }
 
@@ -539,26 +890,29 @@
 
         progressSlider.value = 0;
 
+
         progressSlider.style.setProperty(
           "--progress",
           "0%"
         );
 
+
         wordCounter.textContent =
           "0 / 0";
 
+
         percentage.textContent =
           "0%";
+
+
+        timeRemaining.textContent =
+          "Time remaining: 0:00";
+
 
         return;
 
       }
 
-
-      /*
-       * Index 0 = 0%
-       * Last index = 100%
-       */
 
       let progress = 0;
 
@@ -575,7 +929,10 @@
       progress =
         Math.max(
           0,
-          Math.min(progress, 1)
+          Math.min(
+            progress,
+            1
+          )
         );
 
 
@@ -600,19 +957,12 @@
       percentage.textContent =
         `${Math.round(progressPercent)}%`;
 
-    }
 
-
-    /* =========================
-       TIMING
-       ========================= */
-
-    function getWordDuration() {
-
-      const wpm =
-        Number(wpmSelect.value);
-
-      return 60000 / wpm;
+      timeRemaining.textContent =
+        "Time remaining: " +
+        formatDuration(
+          getRemainingMilliseconds()
+        );
 
     }
 
@@ -626,12 +976,20 @@
       clearTimeout(timer);
 
 
-      if (!running || paused) {
+      if (
+        !running ||
+        paused
+      ) {
+
         return;
+
       }
 
 
-      if (currentIndex >= words.length) {
+      if (
+        currentIndex >=
+        words.length
+      ) {
 
         finishReading();
 
@@ -644,26 +1002,35 @@
         words[currentIndex]
       );
 
+
       updateProgress();
 
 
-      timer = setTimeout(() => {
+      timer =
+        setTimeout(
+          () => {
 
-        currentIndex++;
-
-
-        if (currentIndex >= words.length) {
-
-          finishReading();
-
-          return;
-
-        }
+            currentIndex++;
 
 
-        showCurrentWord();
+            if (
+              currentIndex >=
+              words.length
+            ) {
 
-      }, getWordDuration());
+              finishReading();
+
+              return;
+
+            }
+
+
+            showCurrentWord();
+
+          },
+
+          getWordDuration()
+        );
 
     }
 
@@ -689,6 +1056,9 @@
       }
 
 
+      validateWpmInput();
+
+
       clearTimeout(timer);
 
 
@@ -696,8 +1066,12 @@
         text.match(/\S+/g) || [];
 
 
-      if (words.length === 0) {
+      if (
+        words.length === 0
+      ) {
+
         return;
+
       }
 
 
@@ -718,12 +1092,15 @@
 
       progressSlider.value = 0;
 
-      progressSlider.disabled = false;
+      progressSlider.disabled =
+        false;
 
 
-      pauseButton.disabled = false;
+      pauseButton.disabled =
+        false;
 
-      restartButton.disabled = false;
+      restartButton.disabled =
+        false;
 
       pauseButton.textContent =
         "Pause";
@@ -752,6 +1129,7 @@
         pauseButton.textContent =
           "Pause";
 
+
         showCurrentWord();
 
       } else {
@@ -761,7 +1139,10 @@
         pauseButton.textContent =
           "Resume";
 
+
         clearTimeout(timer);
+
+        updateProgress();
 
       }
 
@@ -774,24 +1155,24 @@
 
     function restartReading() {
 
-      if (words.length === 0) {
+      if (
+        words.length === 0
+      ) {
+
         return;
+
       }
 
 
       clearTimeout(timer);
 
 
-      /*
-       * Reset to first word.
-       */
-
       currentIndex = 0;
 
 
       /*
-       * Reader still exists,
-       * but is now PAUSED.
+       * Reset to beginning,
+       * but remain paused.
        */
 
       running = true;
@@ -807,13 +1188,15 @@
       updateProgress();
 
 
-      pauseButton.disabled = false;
+      pauseButton.disabled =
+        false;
 
       pauseButton.textContent =
         "Resume";
 
 
-      restartButton.disabled = false;
+      restartButton.disabled =
+        false;
 
     }
 
@@ -834,11 +1217,9 @@
         );
 
 
-      /*
-       * Keep the final word visible.
-       */
-
-      if (words.length > 0) {
+      if (
+        words.length > 0
+      ) {
 
         displayWord(
           words[currentIndex]
@@ -847,15 +1228,16 @@
       }
 
 
-      updateProgress();
-
-
       running = false;
 
       paused = false;
 
 
-      pauseButton.disabled = true;
+      updateProgress();
+
+
+      pauseButton.disabled =
+        true;
 
       pauseButton.textContent =
         "Pause";
@@ -864,21 +1246,19 @@
 
 
     /* =========================
-       SEEK / SKIP
+       SEEK
        ========================= */
 
     function seekToWord(index) {
 
-      if (words.length === 0) {
+      if (
+        words.length === 0
+      ) {
+
         return;
+
       }
 
-
-      /*
-       * Stop the existing timer so an
-       * old timeout can't advance us
-       * after the seek.
-       */
 
       clearTimeout(timer);
 
@@ -898,14 +1278,9 @@
       );
 
 
-      updateProgress();
-
-
       /*
-       * If playback had already finished
-       * and the user seeks backwards,
-       * put the reader into a paused state
-       * so they can press Resume.
+       * Seeking backward after the reader
+       * finished should make it resumable.
        */
 
       if (!running) {
@@ -914,22 +1289,22 @@
 
         paused = true;
 
-        pauseButton.disabled = false;
+
+        pauseButton.disabled =
+          false;
 
         pauseButton.textContent =
           "Resume";
 
-        return;
-
       }
 
 
+      updateProgress();
+
+
       /*
-       * If currently playing,
-       * continue from the new location.
-       *
-       * If currently paused,
-       * simply stay paused.
+       * Continue immediately if the reader
+       * was already playing.
        */
 
       if (!paused) {
@@ -963,11 +1338,6 @@
     );
 
 
-    /*
-     * "input" fires continuously while
-     * dragging the progress slider.
-     */
-
     progressSlider.addEventListener(
       "input",
       () => {
@@ -981,11 +1351,39 @@
 
 
     /*
-     * Space bar pause / resume.
-     *
-     * Don't intercept Space while
-     * typing into the textarea,
-     * using the select, etc.
+     * Update the time estimate immediately
+     * when WPM is edited.
+     */
+
+    wpmInput.addEventListener(
+      "input",
+      () => {
+
+        updateProgress();
+
+      }
+    );
+
+
+    /*
+     * Enforce 1–2500 WPM once the user
+     * commits/leaves the field.
+     */
+
+    wpmInput.addEventListener(
+      "change",
+      validateWpmInput
+    );
+
+
+    wpmInput.addEventListener(
+      "blur",
+      validateWpmInput
+    );
+
+
+    /*
+     * Spacebar pause / resume.
      */
 
     document.addEventListener(
@@ -994,7 +1392,7 @@
 
         const editable =
           event.target.matches(
-            "textarea, input, select, button"
+            "textarea, input, button"
           );
 
 
@@ -1003,7 +1401,9 @@
         }
 
 
-        if (event.code === "Space") {
+        if (
+          event.code === "Space"
+        ) {
 
           event.preventDefault();
 
@@ -1018,6 +1418,26 @@
 
       }
     );
+
+
+    /* =========================
+       INITIAL READY WORD
+       ========================= */
+
+    /*
+     * Run it through the same positioning
+     * system as normal RSVP words.
+
+     * This specifically fixes:
+     *
+     * R       eady
+     *
+     * and renders:
+     *
+     * Ready
+     */
+
+    displayWord("Ready");
 
   </script>
 
